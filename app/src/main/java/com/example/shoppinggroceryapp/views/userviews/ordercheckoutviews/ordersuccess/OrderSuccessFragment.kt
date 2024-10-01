@@ -17,10 +17,10 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.order.DailySubscription
-import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnce
-import com.example.shoppinggroceryapp.model.entities.order.TimeSlot
-import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnce
+import com.example.shoppinggroceryapp.model.entities.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
 import com.google.android.material.appbar.MaterialToolbar
@@ -57,7 +57,7 @@ class OrderSuccessFragment : Fragment() {
             restartApp()
         }
         var deliveryFrequency = arguments?.getString("deliveryFrequency")?:"Once"
-        val address = CartFragment.selectedAddress
+        val address = CartFragment.selectedAddressEntity
         val tmpCartId = cartId
         orderSuccessViewModel.placeOrder(tmpCartId,
             PaymentFragment.paymentMode,address!!.addressId,"Pending","Pending",deliveryFrequency)
@@ -68,19 +68,19 @@ class OrderSuccessFragment : Fragment() {
             val dayOfMonth = arguments?.getInt("dayOfMonth")
             if(deliveryFrequency!="Once"){
                 selectedTimeSlot?.let {selectedSlot ->
-                    orderSuccessViewModel.addOrderToTimeSlot(TimeSlot(it.toInt(),selectedSlot))
+                    orderSuccessViewModel.addOrderToTimeSlot(TimeSlotEntity(it.toInt(),selectedSlot))
                 }
                 if(deliveryFrequency=="Daily"){
-                    orderSuccessViewModel.addDailySubscription(DailySubscription(it.toInt()))
+                    orderSuccessViewModel.addDailySubscription(DailySubscriptionEntity(it.toInt()))
                 }
                 else if(deliveryFrequency=="Weekly Once"){
                     dayOfWeek?.let {weekId->
-                        orderSuccessViewModel.addWeeklySubscription(WeeklyOnce(it.toInt(),weekId))
+                        orderSuccessViewModel.addWeeklySubscription(WeeklyOnceEntity(it.toInt(),weekId))
                     }
                 }
                 else if(deliveryFrequency=="Monthly Once"){
                     dayOfMonth?.let {monthNumber->
-                        orderSuccessViewModel.addMonthlySubscription(MonthlyOnce(it.toInt(),monthNumber))
+                        orderSuccessViewModel.addMonthlySubscription(MonthlyOnceEntity(it.toInt(),monthNumber))
                     }
                 }
 

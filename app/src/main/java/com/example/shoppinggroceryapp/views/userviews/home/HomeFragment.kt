@@ -21,7 +21,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.Pro
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModelFactory
 import com.example.shoppinggroceryapp.views.userviews.category.CategoryFragment
@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
     var essentialSize = essentialItems.size -1
     private lateinit var homeFragNestedScroll:NestedScrollView
     private lateinit var recentItems:RecyclerView
-    var recentlyViewedList = mutableListOf<Product>()
+    var recentlyViewedList = mutableListOf<ProductEntity>()
     private lateinit var homeViewModel : HomeViewModel
     companion object{
         var position = 0

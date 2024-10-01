@@ -19,7 +19,7 @@ import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.helpers.permissionhandler.interfaces.ImagePermissionHandler
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.user.User
+import com.example.shoppinggroceryapp.model.entities.user.UserEntity
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.google.android.material.appbar.MaterialToolbar
@@ -128,7 +128,7 @@ class SignUpFragment : Fragment() {
             }
             if((phoneLayout.error==null)&&(emailLayout.error==null)&&(passwordLayout.error==null)&&(firstNameLayout.error==null)&&(confirmPasswordLayout.error==null)){
                 signUpViewModel.registerNewUser(
-                    User(
+                    UserEntity(
                         0,
                         profileUri,
                         firstName.text.toString(),

@@ -1,11 +1,11 @@
 package com.example.shoppinggroceryapp.views.userviews.cartview.diffutil
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 
 class CartItemsDiffUtil(
-    private val oldList:List<Product>,
-    private val newList:List<Product>) : DiffUtil.Callback() {
+    private val oldList:List<ProductEntity>,
+    private val newList:List<ProductEntity>) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

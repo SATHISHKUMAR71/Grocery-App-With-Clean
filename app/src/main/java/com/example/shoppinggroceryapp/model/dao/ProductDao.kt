@@ -5,49 +5,47 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.shoppinggroceryapp.model.dataclass.ChildCategoryName
-import com.example.shoppinggroceryapp.model.entities.products.Category
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
-import com.example.shoppinggroceryapp.model.entities.recentlyvieweditems.RecentlyViewedItems
-import com.example.shoppinggroceryapp.model.entities.user.User
+import com.example.shoppinggroceryapp.model.entities.products.CategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
 
 @Dao
 interface ProductDao:UserDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addParentCategory(parentCategory: ParentCategory)
+    fun addParentCategory(parentCategoryEntity: ParentCategoryEntity)
 
-    @Query("SELECT Category.parentCategoryName FROM Category WHERE Category.categoryName=:childName")
+    @Query("SELECT CategoryEntity.parentCategoryName FROM CategoryEntity WHERE CategoryEntity.categoryName=:childName")
     fun getParentCategoryName(childName:String):String
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSubCategory(category: Category)
+    fun addSubCategory(categoryEntity: CategoryEntity)
 
-    @Query("Select * from ParentCategory")
-    fun getAllParentCategory():List<ParentCategory>
+    @Query("Select * from ParentCategoryEntity")
+    fun getAllParentCategory():List<ParentCategoryEntity>
 
     @Query("SELECT * FROM CATEGORY")
-    fun getAllCategory():List<Category>
+    fun getAllCategory():List<CategoryEntity>
 
-    @Query("SELECT * FROM ParentCategory")
-    fun getParentCategoryList():List<ParentCategory>
+    @Query("SELECT * FROM ParentCategoryEntity")
+    fun getParentCategoryList():List<ParentCategoryEntity>
 
 
-    @Query("SELECT Category.categoryName FROM Category Where Category.parentCategoryName=:parent")
+    @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity Where CategoryEntity.parentCategoryName=:parent")
     fun getChildName(parent:String):List<ChildCategoryName>
 
-    @Query("SELECT ParentCategory.parentCategoryName FROM ParentCategory")
+    @Query("SELECT ParentCategoryEntity.parentCategoryName FROM ParentCategoryEntity")
     fun getParentCategoryName():Array<String>
 
-    @Query("SELECT Category.categoryName FROM Category")
+    @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity")
     fun getChildCategoryName():Array<String>
 
-    @Query("SELECT Category.categoryName FROM Category Where Category.parentCategoryName=:parentName")
+    @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity Where CategoryEntity.parentCategoryName=:parentName")
     fun getChildCategoryName(parentName:String):Array<String>
 
-    @Query("SELECT * FROM Category WHERE Category.parentCategoryName=:parentCategoryName")
-    fun getChildCategoryList(parentCategoryName:String):List<Category>
+    @Query("SELECT * FROM CategoryEntity WHERE CategoryEntity.parentCategoryName=:parentCategoryName")
+    fun getChildCategoryList(parentCategoryName:String):List<CategoryEntity>
 
-    @Query("SELECT * FROM ParentCategory JOIN Category ON Category.parentCategoryName=ParentCategory.parentCategoryName")
-    fun getAllCategoryAndParentCategory():Map<ParentCategory,List<Category>>
+    @Query("SELECT * FROM ParentCategoryEntity JOIN CategoryEntity ON CategoryEntity.parentCategoryName=ParentCategoryEntity.parentCategoryName")
+    fun getAllCategoryAndParentCategory():Map<ParentCategoryEntity,List<CategoryEntity>>
 
 }

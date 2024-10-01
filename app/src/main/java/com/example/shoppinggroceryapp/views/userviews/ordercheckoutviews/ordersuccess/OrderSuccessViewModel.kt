@@ -4,26 +4,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.model.dao.RetailerDao
-import com.example.shoppinggroceryapp.model.entities.order.CartMapping
-import com.example.shoppinggroceryapp.model.entities.order.DailySubscription
-import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnce
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.order.TimeSlot
-import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnce
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.order.CartMappingEntity
+import com.example.shoppinggroceryapp.model.entities.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 
 class OrderSuccessViewModel(var retailerDao: RetailerDao):ViewModel() {
     val lock = Any()
-    var gotOrder:OrderDetails? = null
+    var gotOrder:OrderDetailsEntity? = null
     var orderedId:MutableLiveData<Long> = MutableLiveData()
-    var cartItems:List<CartWithProductData>? = null
-    var newCart:MutableLiveData<CartMapping> = MutableLiveData()
-    var orderWithCart:MutableLiveData<Map<OrderDetails,List<CartWithProductData>>> = MutableLiveData()
+    var cartItems:List<CartWithProductDataEntity>? = null
+    var newCart:MutableLiveData<CartMappingEntity> = MutableLiveData()
+    var orderWithCart:MutableLiveData<Map<OrderDetailsEntity,List<CartWithProductDataEntity>>> = MutableLiveData()
     fun placeOrder(cartId:Int,paymentMode:String,addressId:Int,deliveryStatus:String,paymentStatus:String,deliveryFrequency:String){
         Thread {
             synchronized(lock) {
                 orderedId.postValue(retailerDao.addOrder(
-                    OrderDetails(
+                    OrderDetailsEntity(
                         0,
                         orderedDate = DateGenerator.getCurrentDate(),
                         deliveryDate = DateGenerator.getDeliveryDate(),
@@ -48,30 +48,30 @@ class OrderSuccessViewModel(var retailerDao: RetailerDao):ViewModel() {
         }.start()
     }
 
-    fun addMonthlySubscription(monthlyOnce: MonthlyOnce){
+    fun addMonthlySubscription(monthlyOnceEntity: MonthlyOnceEntity){
         Thread{
-            retailerDao.addMonthlyOnceSubscription(monthlyOnce)
+            retailerDao.addMonthlyOnceSubscription(monthlyOnceEntity)
             getSubscriptionDetails()
         }.start()
     }
 
-    fun addWeeklySubscription(weeklyOnce: WeeklyOnce){
+    fun addWeeklySubscription(weeklyOnceEntity: WeeklyOnceEntity){
         Thread{
-            retailerDao.addWeeklyOnceSubscription(weeklyOnce)
+            retailerDao.addWeeklyOnceSubscription(weeklyOnceEntity)
             getSubscriptionDetails()
         }.start()
     }
 
-    fun addDailySubscription(dailySubscription: DailySubscription){
+    fun addDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity){
         Thread{
-            retailerDao.addDailySubscription(dailySubscription)
+            retailerDao.addDailySubscription(dailySubscriptionEntity)
             getSubscriptionDetails()
         }.start()
     }
 
-    fun addOrderToTimeSlot(timeSlot: TimeSlot){
+    fun addOrderToTimeSlot(timeSlotEntity: TimeSlotEntity){
         Thread{
-            retailerDao.addTimeSlot(timeSlot)
+            retailerDao.addTimeSlot(timeSlotEntity)
         }.start()
     }
 
@@ -95,8 +95,8 @@ class OrderSuccessViewModel(var retailerDao: RetailerDao):ViewModel() {
     fun updateAndAssignNewCart(cartId: Int,userId:Int){
         Thread {
             synchronized(lock) {
-                retailerDao.updateCartMapping(CartMapping(cartId, userId, "not available"))
-                retailerDao.addCartForUser(CartMapping(0, userId, "available"))
+                retailerDao.updateCartMapping(CartMappingEntity(cartId, userId, "not available"))
+                retailerDao.addCartForUser(CartMappingEntity(0, userId, "available"))
                 newCart.postValue(retailerDao.getCartForUser(userId))
             }
         }.start()

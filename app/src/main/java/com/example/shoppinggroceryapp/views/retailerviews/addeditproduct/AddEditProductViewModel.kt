@@ -5,23 +5,23 @@ import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.model.dao.ProductDao
 import com.example.shoppinggroceryapp.model.dao.RetailerDao
-import com.example.shoppinggroceryapp.model.entities.products.BrandData
-import com.example.shoppinggroceryapp.model.entities.products.Category
-import com.example.shoppinggroceryapp.model.entities.products.Images
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.BrandDataEntity
+import com.example.shoppinggroceryapp.model.entities.products.CategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ImagesEntity
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailViewModel
 
 class AddEditProductViewModel(var retailerDao: RetailerDao, var productDao: ProductDao):ViewModel() {
 
     var brandName:MutableLiveData<String> = MutableLiveData()
     var parentArray:MutableLiveData<Array<String>> = MutableLiveData()
-    var imageList:MutableLiveData<List<Images>> = MutableLiveData()
+    var imageList:MutableLiveData<List<ImagesEntity>> = MutableLiveData()
     var parentCategory:MutableLiveData<String> = MutableLiveData()
     var childArray:MutableLiveData<Array<String>> = MutableLiveData()
     var categoryImage:MutableLiveData<String> = MutableLiveData()
     companion object {
-        var modifiedProduct: MutableLiveData<Product> = MutableLiveData()
+        var modifiedProductEntity: MutableLiveData<ProductEntity> = MutableLiveData()
     }
 
     fun getBrandName(brandId:Long){
@@ -68,15 +68,15 @@ class AddEditProductViewModel(var retailerDao: RetailerDao, var productDao: Prod
         }.start()
     }
 
-    fun addParentCategory(parentCategory: ParentCategory){
+    fun addParentCategory(parentCategoryEntity: ParentCategoryEntity){
         Thread{
-            retailerDao.addParentCategory(parentCategory)
+            retailerDao.addParentCategory(parentCategoryEntity)
         }.start()
     }
 
-    fun addSubCategory(category: Category){
+    fun addSubCategory(categoryEntity: CategoryEntity){
         Thread{
-            retailerDao.addSubCategory(category)
+            retailerDao.addSubCategory(categoryEntity)
         }.start()
     }
 
@@ -86,27 +86,27 @@ class AddEditProductViewModel(var retailerDao: RetailerDao, var productDao: Prod
         }.start()
     }
 
-    fun updateInventory(brandName:String,isNewProduct:Boolean,product: Product,productId:Long?,imageList: List<String>,deletedImageList:MutableList<String>){
-        var brand:BrandData
+    fun updateInventory(brandName:String, isNewProduct:Boolean, productEntity: ProductEntity, productId:Long?, imageList: List<String>, deletedImageList:MutableList<String>){
+        var brand:BrandDataEntity
         Thread{
             synchronized(ProductDetailViewModel.brandLock) {
                 brand = retailerDao.getBrandWithName(brandName)
-                var prod:Product
-                var lastProduct:Product
+                var prod:ProductEntity
+                var lastProductEntity:ProductEntity
                 if (brand == null) {
-                    retailerDao.addNewBrand(BrandData(0, brandName))
+                    retailerDao.addNewBrand(BrandDataEntity(0, brandName))
                     brand = retailerDao.getBrandWithName(brandName)
                 }
                 if (isNewProduct) {
-                    prod = product.copy(brandId = brand.brandId)
-                    modifiedProduct.postValue(prod)
+                    prod = productEntity.copy(brandId = brand.brandId)
+                    modifiedProductEntity.postValue(prod)
                     retailerDao.addProduct(prod)
-                    lastProduct = retailerDao.getLastProduct()
+                    lastProductEntity = retailerDao.getLastProduct()
                 } else {
-                    prod = product.copy(brandId = brand.brandId, productId = productId!!)
+                    prod = productEntity.copy(brandId = brand.brandId, productId = productId!!)
                     retailerDao.updateProduct(prod)
-                    modifiedProduct.postValue(prod)
-                    lastProduct = prod
+                    modifiedProductEntity.postValue(prod)
+                    lastProductEntity = prod
                 }
 
 //                for(j in retailerDao.getImagesForProduct(lastProduct.productId)){
@@ -116,9 +116,9 @@ class AddEditProductViewModel(var retailerDao: RetailerDao, var productDao: Prod
                     retailerDao.deleteImage(retailerDao.getSpecificImage(j))
                 }
                 for(i in imageList){
-                    retailerDao.addImagesInDb(Images(0,lastProduct.productId,i))
+                    retailerDao.addImagesInDb(ImagesEntity(0,lastProductEntity.productId,i))
                 }
-                ProductListFragment.selectedProduct.postValue(prod)
+                ProductListFragment.selectedProductEntity.postValue(prod)
             }
 
         }.start()

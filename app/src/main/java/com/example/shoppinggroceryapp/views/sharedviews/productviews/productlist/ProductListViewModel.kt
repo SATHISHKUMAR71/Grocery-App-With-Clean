@@ -3,25 +3,25 @@ package com.example.shoppinggroceryapp.views.sharedviews.productviews.productlis
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.order.Cart
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.order.CartEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 
 class ProductListViewModel(var userDao: UserDao):ViewModel() {
 
-    var cartList: MutableLiveData<List<Cart>> = MutableLiveData()
-    var productList: MutableLiveData<List<Product>> = MutableLiveData()
-    var productCategoryList: MutableLiveData<List<Product>> = MutableLiveData()
-    var manufacturedSortedList:MutableLiveData<List<Product>> = MutableLiveData()
-    var cartListForProducts:MutableList<Cart?> = mutableListOf()
+    var cartEntityList: MutableLiveData<List<CartEntity>> = MutableLiveData()
+    var productEntityList: MutableLiveData<List<ProductEntity>> = MutableLiveData()
+    var productEntityCategoryList: MutableLiveData<List<ProductEntity>> = MutableLiveData()
+    var manufacturedSortedList:MutableLiveData<List<ProductEntity>> = MutableLiveData()
+    var cartEntityListForProducts:MutableList<CartEntity?> = mutableListOf()
     fun getCartItems(cartId: Int) {
         Thread {
-            cartList.postValue(userDao.getCartItems(cartId))
+            cartEntityList.postValue(userDao.getCartItems(cartId))
         }.start()
     }
 
     fun getOnlyProducts() {
         Thread {
-            productList.postValue(userDao.getOnlyProducts())
+            productEntityList.postValue(userDao.getOnlyProducts())
         }.start()
     }
 
@@ -32,14 +32,14 @@ class ProductListViewModel(var userDao: UserDao):ViewModel() {
             if(list.isEmpty()) {
                 list = userDao.getProductsByName(category)
             }
-            productCategoryList.postValue(list)
+            productEntityCategoryList.postValue(list)
         }.start()
     }
 
-    fun getSpecificCart(cartId: Int,productId:Int,callback: (Cart?) -> Unit){
+    fun getSpecificCart(cartId: Int,productId:Int,callback: (CartEntity?) -> Unit){
         Thread{
-            val cartData:Cart? = (userDao.getSpecificCart(cartId,productId))
-            callback(cartData)
+            val cartEntityData:CartEntity? = (userDao.getSpecificCart(cartId,productId))
+            callback(cartEntityData)
         }.start()
     }
 
@@ -49,15 +49,15 @@ class ProductListViewModel(var userDao: UserDao):ViewModel() {
         }.start()
     }
 
-    fun removeProductInCart(cart: Cart){
+    fun removeProductInCart(cartEntity: CartEntity){
         Thread{
-            userDao.removeProductInCart(cart)
+            userDao.removeProductInCart(cartEntity)
         }.start()
     }
 
-    fun updateItemsInCart(cart: Cart){
+    fun updateItemsInCart(cartEntity: CartEntity){
         Thread{
-            userDao.addItemsToCart(cart)
+            userDao.addItemsToCart(cartEntity)
         }.start()
     }
 

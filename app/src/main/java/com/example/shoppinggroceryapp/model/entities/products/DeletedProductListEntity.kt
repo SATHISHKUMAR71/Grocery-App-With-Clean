@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class DeletedProductList(
+data class DeletedProductListEntity(
     @PrimaryKey(autoGenerate = false)
     val productId:Long,
     val brandId:Long,

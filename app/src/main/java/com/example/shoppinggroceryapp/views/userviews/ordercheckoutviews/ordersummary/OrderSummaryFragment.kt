@@ -27,10 +27,10 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.adapter.ProductViewAdapter
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.order.DailySubscription
-import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnce
-import com.example.shoppinggroceryapp.model.entities.order.TimeSlot
-import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnce
+import com.example.shoppinggroceryapp.model.entities.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnceEntity
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.example.shoppinggroceryapp.views.userviews.cartview.cart.CartFragment
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.PaymentFragment
@@ -122,10 +122,10 @@ class OrderSummaryFragment : Fragment() {
             recyclerViewProducts.adapter = ProductViewAdapter(File(requireContext().filesDir,"AppImages"))
             recyclerViewProducts.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         }
-        val addressVal = "${CartFragment.selectedAddress?.buildingName}, ${CartFragment.selectedAddress?.streetName}, ${CartFragment.selectedAddress?.city}, ${CartFragment.selectedAddress?.state}, ${CartFragment.selectedAddress?.postalCode}"
-        addressOwnerName.text = CartFragment.selectedAddress?.addressContactName
+        val addressVal = "${CartFragment.selectedAddressEntity?.buildingName}, ${CartFragment.selectedAddressEntity?.streetName}, ${CartFragment.selectedAddressEntity?.city}, ${CartFragment.selectedAddressEntity?.state}, ${CartFragment.selectedAddressEntity?.postalCode}"
+        addressOwnerName.text = CartFragment.selectedAddressEntity?.addressContactName
         addressValue.text = addressVal
-        addressNumber.text = CartFragment.selectedAddress?.addressContactNumber
+        addressNumber.text = CartFragment.selectedAddressEntity?.addressContactNumber
 
         val items = "MRP ($totalItems Products)"
         noOfItems.text = items
@@ -345,11 +345,11 @@ class OrderSummaryFragment : Fragment() {
         if(tmpAddress!=0 && tmpCart != 0 && tmpOrderId!=0){
             OrderListFragment.selectedOrder?.let {
                 orderSummaryViewModel.updateOrderDetails(it.copy(deliveryFrequency = deliveryFrequency.text.toString()))
-                orderSummaryViewModel.updateTimeSlot(TimeSlot(tmpOrderId!!,timeId))
+                orderSummaryViewModel.updateTimeSlot(TimeSlotEntity(tmpOrderId!!,timeId))
                 when(deliveryFrequency.text.toString()){
-                    "Monthly Once" -> {orderSummaryViewModel.updateMonthly(MonthlyOnce(tmpOrderId!!,dayOfMonth!!))}
-                    "Weekly Once" -> {orderSummaryViewModel.updateWeekly(WeeklyOnce(tmpOrderId!!,dayOfWeek!!))}
-                    "Daily" -> {orderSummaryViewModel.updateDaily(DailySubscription(tmpOrderId!!))}
+                    "Monthly Once" -> {orderSummaryViewModel.updateMonthly(MonthlyOnceEntity(tmpOrderId!!,dayOfMonth!!))}
+                    "Weekly Once" -> {orderSummaryViewModel.updateWeekly(WeeklyOnceEntity(tmpOrderId!!,dayOfWeek!!))}
+                    "Daily" -> {orderSummaryViewModel.updateDaily(DailySubscriptionEntity(tmpOrderId!!))}
                     "Once" -> {
                         orderSummaryViewModel.deleteDaily(tmpOrderId!!)
                         orderSummaryViewModel.deleteWeekly(tmpOrderId!!)

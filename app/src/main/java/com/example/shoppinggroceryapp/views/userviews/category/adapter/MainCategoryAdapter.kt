@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.imagehandlers.ImageLoaderAndGetter
 import com.example.shoppinggroceryapp.model.dataclass.ChildCategoryName
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
 
-class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategory>,private var childCategoryList:List<List<ChildCategoryName>>,var imageLoader: ImageLoaderAndGetter):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
+class MainCategoryAdapter(var fragment: Fragment, private var mainCategoryList: List<ParentCategoryEntity>, private var childCategoryList:List<List<ChildCategoryName>>, var imageLoader: ImageLoaderAndGetter):RecyclerView.Adapter<MainCategoryAdapter.MainCategoryHolder>() {
 
     companion object{
         var expandedData = mutableSetOf<Int>()

@@ -22,7 +22,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModelFactory
 import com.google.android.material.badge.BadgeDrawable
@@ -45,8 +45,8 @@ class OfferFragment : Fragment() {
     }
     private lateinit var filterAndSortLayout:LinearLayout
     private lateinit var filterCount:TextView
-    private var realList = mutableListOf<Product>()
-    var products = listOf<Product>()
+    private var realList = mutableListOf<ProductEntity>()
+    var productEntities = listOf<ProductEntity>()
     private lateinit var offerList:RecyclerView
     private lateinit var adapter: ProductListAdapter
     private lateinit var offerViewModel: OfferViewModel
@@ -109,17 +109,17 @@ class OfferFragment : Fragment() {
         offerViewModel.getOfferedProducts()
 
 
-        offerViewModel.offeredProductList.observe(viewLifecycleOwner){ offeredProductList ->
+        offerViewModel.offeredProductEntityList.observe(viewLifecycleOwner){ offeredProductList ->
 
             realList = offeredProductList.toMutableList()
 //            products = realList
-            if(products.isNotEmpty()){
+            if(productEntities.isNotEmpty()){
             }
-            if(products.isEmpty()) {
-                products = offeredProductList
+            if(productEntities.isEmpty()) {
+                productEntities = offeredProductList
             }
             if(FilterFragment.list==null){
-                if(products.isEmpty()){
+                if(productEntities.isEmpty()){
                     noItemsFoundImageText.visibility = View.VISIBLE
                     noItemsFoundImage.visibility =View.VISIBLE
                 }
@@ -132,7 +132,7 @@ class OfferFragment : Fragment() {
                     adapter.setProducts(offeredProductList)
                 }
                 else{
-                    adapter.setProducts(products)
+                    adapter.setProducts(productEntities)
                 }
                 if(offerList.adapter==null) {
                     offerList.adapter = adapter
@@ -156,7 +156,7 @@ class OfferFragment : Fragment() {
         filterButton.setOnClickListener {
             offerFilterCount = 0
 //            FilterFragment.list = realList.toMutableList()
-            products = realList
+            productEntities = realList
             if(FilterFragment.list!=null) {
                 FragmentTransaction.navigateWithBackstack(
                     parentFragmentManager,
@@ -179,10 +179,10 @@ class OfferFragment : Fragment() {
         }
         val sorter  = ProductSorter()
         BottomSheetDialogFragment.selectedOption.observe(viewLifecycleOwner){
-            var newList: List<Product> = mutableListOf()
+            var newList: List<ProductEntity> = mutableListOf()
             if(it==0){
                 if(FilterFragment.list==null) {
-                    newList = sorter.sortByDate(products)
+                    newList = sorter.sortByDate(productEntities)
                 }
                 else{
                     newList = sorter.sortByDate(FilterFragment.list!!)
@@ -191,7 +191,7 @@ class OfferFragment : Fragment() {
             }
             else if(it == 1){
                 if(FilterFragment.list==null) {
-                    newList = sorter.sortByExpiryDate(products)
+                    newList = sorter.sortByExpiryDate(productEntities)
                 }
                 else{
                     newList = sorter.sortByExpiryDate(FilterFragment.list!!)
@@ -200,7 +200,7 @@ class OfferFragment : Fragment() {
             }
             else if(it == 2){
                 if(FilterFragment.list==null) {
-                    newList = sorter.sortByDiscount(products)
+                    newList = sorter.sortByDiscount(productEntities)
                 }
                 else{
                     newList = sorter.sortByDiscount(FilterFragment.list!!)
@@ -209,7 +209,7 @@ class OfferFragment : Fragment() {
             }
             else if(it == 3){
                 if(FilterFragment.list==null) {
-                    newList = sorter.sortByPriceLowToHigh(products)
+                    newList = sorter.sortByPriceLowToHigh(productEntities)
                 }
                 else{
                     newList = sorter.sortByPriceLowToHigh(FilterFragment.list!!)
@@ -218,7 +218,7 @@ class OfferFragment : Fragment() {
             }
             else if(it == 4){
                 if(FilterFragment.list==null) {
-                    newList = sorter.sortByPriceHighToLow(products)
+                    newList = sorter.sortByPriceHighToLow(productEntities)
                 }
                 else{
                     newList = sorter.sortByPriceHighToLow(FilterFragment.list!!)
@@ -226,7 +226,7 @@ class OfferFragment : Fragment() {
                 adapter.setProducts(newList)
             }
             if(newList.isNotEmpty()){
-                products = newList
+                productEntities = newList
                 if(FilterFragment.list!=null){
                     if(FilterFragment.list!!.size==newList.size){
                         FilterFragment.list = newList.toMutableList()
@@ -254,8 +254,8 @@ class OfferFragment : Fragment() {
         if(FilterFragment.list?.isNotEmpty()==true){
             adapter.setProducts(FilterFragment.list!!)
         }
-        else if (products.isNotEmpty()) {
-            adapter.setProducts(products)
+        else if (productEntities.isNotEmpty()) {
+            adapter.setProducts(productEntities)
         }
         offerList.scrollToPosition(offerListFirstVisiblePos ?:0)
     }

@@ -20,7 +20,7 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.user.Address
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModel
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListViewModelFactory
@@ -37,7 +37,7 @@ class CartFragment : Fragment() {
     companion object{
         var viewPriceDetailData = MutableLiveData(49f)
         var cartItemsSize = 0
-        var selectedAddress:Address? = null
+        var selectedAddressEntity:AddressEntity? = null
     }
     var noOfItemsInt = 0
     private var continuePressed = 0
@@ -134,24 +134,24 @@ class CartFragment : Fragment() {
             viewPriceDetailData.value = it
         }
         cartViewModel.getAddressListForUser(MainActivity.userId.toInt())
-        cartViewModel.addressList.observe(viewLifecycleOwner){ addressList ->
+        cartViewModel.addressEntityList.observe(viewLifecycleOwner){ addressList ->
             if (addressList.isEmpty()) {
                 deliveryAddressNotFound.visibility = View.VISIBLE
                 deliveryAddressFound.visibility = View.GONE
             } else {
                 deliveryAddressFound.visibility = View.VISIBLE
                 deliveryAddressNotFound.visibility = View.GONE
-                if(selectedAddress ==null){
-                    selectedAddress = addressList[0]
+                if(selectedAddressEntity ==null){
+                    selectedAddressEntity = addressList[0]
                 }
-                addressOwnerName.text = selectedAddress?.addressContactName
-                val addressVal = "${selectedAddress?.buildingName}, ${selectedAddress?.streetName}, ${selectedAddress?.city}, ${selectedAddress?.state}\n${selectedAddress?.postalCode}"
+                addressOwnerName.text = selectedAddressEntity?.addressContactName
+                val addressVal = "${selectedAddressEntity?.buildingName}, ${selectedAddressEntity?.streetName}, ${selectedAddressEntity?.city}, ${selectedAddressEntity?.state}\n${selectedAddressEntity?.postalCode}"
                 address.text =addressVal
-                addressContactNumber.text = selectedAddress?.addressContactNumber
+                addressContactNumber.text = selectedAddressEntity?.addressContactNumber
             }
         }
         continueButton.setOnClickListener {
-            if(selectedAddress ==null){
+            if(selectedAddressEntity ==null){
                 Snackbar.make(view,"Please Add the Delivery Address to order Items",Toast.LENGTH_SHORT).setBackgroundTint(Color.RED).show()
             }
             else{

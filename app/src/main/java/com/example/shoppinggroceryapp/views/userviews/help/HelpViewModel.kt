@@ -3,7 +3,7 @@ package com.example.shoppinggroceryapp.views.userviews.help
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.help.CustomerRequest
+import com.example.shoppinggroceryapp.model.entities.help.CustomerRequestEntity
 
 class HelpViewModel(var userDao: UserDao):ViewModel() {
     var productList:MutableLiveData<String> = MutableLiveData()
@@ -19,9 +19,9 @@ class HelpViewModel(var userDao: UserDao):ViewModel() {
         }.start()
     }
 
-    fun sendReq(customerRequest: CustomerRequest){
+    fun sendReq(customerRequestEntity: CustomerRequestEntity){
         Thread{
-            userDao.addCustomerRequest(customerRequest)
+            userDao.addCustomerRequest(customerRequestEntity)
         }.start()
     }
 }

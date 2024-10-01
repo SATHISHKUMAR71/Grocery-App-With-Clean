@@ -70,7 +70,7 @@ class ForgotPasswordFragment : Fragment() {
             editProfileViewModel.getUser(userData.toString())
         }
 
-        editProfileViewModel.user.observe(viewLifecycleOwner){
+        editProfileViewModel.userEntity.observe(viewLifecycleOwner){
             passwordEditText.clearFocus()
             emailOrPhoneEditText.clearFocus()
             confirmPasswordEditText.clearFocus()

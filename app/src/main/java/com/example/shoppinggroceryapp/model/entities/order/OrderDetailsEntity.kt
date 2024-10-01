@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class OrderDetails(
+data class OrderDetailsEntity(
     @PrimaryKey(autoGenerate = true)
     val orderId:Int,
     val cartId:Int,

@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 import java.io.File
 
 class ProductViewAdapter(var file:File):RecyclerView.Adapter<ProductViewAdapter.ProductViewPagerHolder>() {
 
     companion object{
-        var productsList = listOf<CartWithProductData>()
+        var productsList = listOf<CartWithProductDataEntity>()
     }
     inner class ProductViewPagerHolder(productView:View):RecyclerView.ViewHolder(productView){
         val imageView = productView.findViewById<ImageView>(R.id.imageViewProductViewPager)

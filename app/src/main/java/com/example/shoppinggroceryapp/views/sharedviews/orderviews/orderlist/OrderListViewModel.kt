@@ -3,16 +3,16 @@ package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.RetailerDao
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 
 class OrderListViewModel(var retailerDao: RetailerDao):ViewModel() {
 
-    var orderedItems:MutableLiveData<List<OrderDetails>> = MutableLiveData()
+    var orderedItems:MutableLiveData<List<OrderDetailsEntity>> = MutableLiveData()
     var dataReady:MutableLiveData<Boolean> = MutableLiveData()
     private var lock =Any()
-    var cartWithProductList:MutableLiveData<MutableList<MutableList<CartWithProductData>>> =
-        MutableLiveData<MutableList<MutableList<CartWithProductData>>>().apply {
+    var cartWithProductList:MutableLiveData<MutableList<MutableList<CartWithProductDataEntity>>> =
+        MutableLiveData<MutableList<MutableList<CartWithProductDataEntity>>>().apply {
             value = mutableListOf()
         }
 

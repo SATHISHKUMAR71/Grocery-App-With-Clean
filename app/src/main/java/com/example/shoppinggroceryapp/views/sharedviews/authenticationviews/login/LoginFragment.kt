@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.user.User
+import com.example.shoppinggroceryapp.model.entities.user.UserEntity
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.signup.SignUpFragment
@@ -39,7 +39,7 @@ class LoginFragment : Fragment() {
     private lateinit var inputChecker: InputChecker
     private lateinit var handler: Handler
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit  var userObserver:Observer<User?>
+    private lateinit  var userEntityObserver:Observer<UserEntity?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +76,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun setLoginViewModelObservers() {
-        loginViewModel.userName.observe(viewLifecycleOwner){
+        loginViewModel.userEntityName.observe(viewLifecycleOwner){
             if(it == null){
                 Snackbar.make(requireView(),"User Not Found",Snackbar.LENGTH_SHORT).apply {
                     setBackgroundTint(Color.argb(255,180,30,38))
@@ -88,7 +88,7 @@ class LoginFragment : Fragment() {
             }
         }
 
-        loginViewModel.user.observe(viewLifecycleOwner){
+        loginViewModel.userEntity.observe(viewLifecycleOwner){
             if(it==null){
                 Snackbar.make(requireView(),"InValid Password",Snackbar.LENGTH_SHORT).apply {
                     setBackgroundTint(Color.argb(255,180,30,38))
@@ -121,8 +121,8 @@ class LoginFragment : Fragment() {
             emailPhoneText.text = null
             passwordLayout.error = null
             emailPhoneTextLayout.error = null
-            loginViewModel.userName = MutableLiveData()
-            loginViewModel.user = MutableLiveData()
+            loginViewModel.userEntityName = MutableLiveData()
+            loginViewModel.userEntity = MutableLiveData()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentBody, ForgotPasswordFragment())
                 .addToBackStack("Sign Up Fragment")
@@ -151,8 +151,8 @@ class LoginFragment : Fragment() {
             emailPhoneText.text = null
             passwordLayout.error = null
             emailPhoneTextLayout.error = null
-            loginViewModel.userName = MutableLiveData()
-            loginViewModel.user = MutableLiveData()
+            loginViewModel.userEntityName = MutableLiveData()
+            loginViewModel.userEntity = MutableLiveData()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentBody, SignUpFragment())
                 .addToBackStack("Sign Up Fragment")

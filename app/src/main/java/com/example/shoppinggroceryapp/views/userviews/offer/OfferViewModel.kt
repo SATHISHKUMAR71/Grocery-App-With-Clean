@@ -3,13 +3,13 @@ package com.example.shoppinggroceryapp.views.userviews.offer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 
 class OfferViewModel(var userDao: UserDao):ViewModel() {
-    var offeredProductList:MutableLiveData<List<Product>> = MutableLiveData()
+    var offeredProductEntityList:MutableLiveData<List<ProductEntity>> = MutableLiveData()
     fun getOfferedProducts(){
         Thread {
-            offeredProductList.postValue(userDao.getOfferedProducts())
+            offeredProductEntityList.postValue(userDao.getOfferedProducts())
         }.start()
     }
 }

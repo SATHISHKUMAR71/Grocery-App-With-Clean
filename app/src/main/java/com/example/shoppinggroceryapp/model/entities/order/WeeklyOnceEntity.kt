@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class TimeSlot(
+data class WeeklyOnceEntity(
     @PrimaryKey(autoGenerate = false)
     val orderId:Int,
-    val timeId:Int
+    val weekId:Int
 )

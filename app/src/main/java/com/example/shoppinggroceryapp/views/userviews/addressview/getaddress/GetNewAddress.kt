@@ -15,7 +15,7 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputChecker
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.user.Address
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.SavedAddressList
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -72,8 +72,8 @@ class GetNewAddress : Fragment() {
         addressTopBar = view.findViewById(R.id.getAddressToolbar)
         phone.filters = arrayOf(InputFilter.LengthFilter(15))
         postalCode.filters = arrayOf(InputFilter.LengthFilter(8))
-        if(SavedAddressList.editAddress !=null){
-            SavedAddressList.editAddress?.let {
+        if(SavedAddressList.editAddressEntity !=null){
+            SavedAddressList.editAddressEntity?.let {
                 fullName.setText(it.addressContactName)
                 phone.setText(it.addressContactNumber)
                 houseNo.setText(it.buildingName)
@@ -97,10 +97,10 @@ class GetNewAddress : Fragment() {
             postalCodeLayout.error = addressInputChecker.lengthAndEmptyCheck("Zip Code",postalCode,6)
             if(fullNameLayout.error==null && houseLayout.error==null && phoneLayout.error==null &&streetLayout.error==null &&
                 cityLayout.error ==null && stateLayout.error==null && postalCodeLayout.error == null){
-                if(SavedAddressList.editAddress !=null){
+                if(SavedAddressList.editAddressEntity !=null){
                     getAddressViewModel.updateAddress(
-                    Address(
-                        addressId = SavedAddressList.editAddress!!.addressId,
+                    AddressEntity(
+                        addressId = SavedAddressList.editAddressEntity!!.addressId,
                         userId = MainActivity.userId.toInt(),
                         addressContactName = fullName.text.toString(),
                         addressContactNumber = phone.text.toString(),
@@ -116,7 +116,7 @@ class GetNewAddress : Fragment() {
                 }
                 else {
                     getAddressViewModel.addAddress(
-                        Address(
+                        AddressEntity(
                             addressId = 0,
                             userId = MainActivity.userId.toInt(),
                             addressContactName = fullName.text.toString(),
@@ -149,7 +149,7 @@ class GetNewAddress : Fragment() {
         super.onStop()
         InitialFragment.hideSearchBar.value = false
         InitialFragment.hideBottomNav.value = false
-        SavedAddressList.editAddress = null
+        SavedAddressList.editAddressEntity = null
     }
 
     fun addFocusChangeListeners(){

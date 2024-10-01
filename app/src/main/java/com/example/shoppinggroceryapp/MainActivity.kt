@@ -14,13 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.LruCache
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.authenticationviews.login.LoginFragment
 import com.example.shoppinggroceryapp.model.dao.UserDao
 import com.example.shoppinggroceryapp.model.database.AppDatabase
 import com.example.shoppinggroceryapp.model.database.AppDatabase.Companion.getAppDatabase
-import com.example.shoppinggroceryapp.model.entities.order.CartMapping
+import com.example.shoppinggroceryapp.model.entities.order.CartMappingEntity
 import com.example.shoppinggroceryapp.views.initialview.InitialDataSetter
 
 
@@ -77,9 +76,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun assignCart(db2:UserDao){
         Thread {
-            val cart: CartMapping? = db2.getCartForUser(userId.toInt())
+            val cart: CartMappingEntity? = db2.getCartForUser(userId.toInt())
             if (cart == null) {
-                db2.addCartForUser(CartMapping(0, userId = userId.toInt(), "available"))
+                db2.addCartForUser(CartMappingEntity(0, userId = userId.toInt(), "available"))
                 val newCart = db2.getCartForUser(userId.toInt())
                 cartId = newCart.cartId
             } else {

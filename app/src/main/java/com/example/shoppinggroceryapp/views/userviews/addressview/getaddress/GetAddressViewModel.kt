@@ -2,18 +2,18 @@ package com.example.shoppinggroceryapp.views.userviews.addressview.getaddress
 
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.user.Address
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity
 
 class GetAddressViewModel(var userDao: UserDao):ViewModel() {
-    fun addAddress(address:Address){
+    fun addAddress(addressEntity:AddressEntity){
         Thread{
-            userDao.addAddress(address)
+            userDao.addAddress(addressEntity)
         }.start()
     }
 
-    fun updateAddress(address: Address){
+    fun updateAddress(addressEntity: AddressEntity){
         Thread{
-            userDao.updateAddress(address)
+            userDao.updateAddress(addressEntity)
 
         }.start()
     }

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.search.SearchHistory
+import com.example.shoppinggroceryapp.model.entities.search.SearchHistoryEntity
 
 class SearchViewModel(var userDao: UserDao):ViewModel() {
 
@@ -26,7 +26,7 @@ class SearchViewModel(var userDao: UserDao):ViewModel() {
 
     fun addItemInDb(query:String){
         Thread {
-            userDao.addSearchQueryInDb(SearchHistory(query,MainActivity.userId.toInt()))
+            userDao.addSearchQueryInDb(SearchHistoryEntity(query,MainActivity.userId.toInt()))
         }.start()
     }
 

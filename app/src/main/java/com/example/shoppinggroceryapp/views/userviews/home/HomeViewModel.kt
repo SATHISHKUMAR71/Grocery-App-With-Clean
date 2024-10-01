@@ -4,18 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.model.dao.ProductDao
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 
 class HomeViewModel(var productDao: ProductDao):ViewModel() {
 
-    var recentlyViewedList:MutableLiveData<MutableList<Product>> = MutableLiveData()
+    var recentlyViewedList:MutableLiveData<MutableList<ProductEntity>> = MutableLiveData()
     fun getRecentlyViewedItems(){
         Thread{
-            val list = mutableListOf<Product>()
+            val list = mutableListOf<ProductEntity>()
             val recentlyViewedProduct = productDao.getRecentlyViewedProducts(MainActivity.userId.toInt())
             for(i in recentlyViewedProduct){
-                var product:Product? = productDao.getProductById(i.toLong())
-                product?.let {
+                var productEntity:ProductEntity? = productDao.getProductById(i.toLong())
+                productEntity?.let {
                     list.add(it)
                 }
             }

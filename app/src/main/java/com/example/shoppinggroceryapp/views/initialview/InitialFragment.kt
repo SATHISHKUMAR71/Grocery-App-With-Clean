@@ -20,12 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.MainActivity.Companion.isRetailer
-import com.example.shoppinggroceryapp.MainActivity.Companion.userEmail
-import com.example.shoppinggroceryapp.MainActivity.Companion.userFirstName
-import com.example.shoppinggroceryapp.MainActivity.Companion.userId
-import com.example.shoppinggroceryapp.MainActivity.Companion.userImage
-import com.example.shoppinggroceryapp.MainActivity.Companion.userLastName
-import com.example.shoppinggroceryapp.MainActivity.Companion.userPhone
 import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.views.userviews.cartview.FindNumberOfCartItems
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
@@ -274,7 +268,7 @@ class InitialFragment : Fragment() {
         if(!isRetailer){
             cartListViewModel.getCartItems(MainActivity.cartId)
         }
-        cartListViewModel.cartList.observe(viewLifecycleOwner){
+        cartListViewModel.cartEntityList.observe(viewLifecycleOwner){
             if(!isRetailer){
                 FindNumberOfCartItems.productCount.value = it.size
             }

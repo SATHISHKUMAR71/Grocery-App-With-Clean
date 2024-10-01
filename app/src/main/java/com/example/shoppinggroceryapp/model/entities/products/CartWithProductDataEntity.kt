@@ -1,6 +1,6 @@
 package com.example.shoppinggroceryapp.model.entities.products
 
-data class CartWithProductData (
+data class CartWithProductDataEntity (
     val mainImage:String?,
     val productName:String,
     val productDescription:String,

@@ -16,7 +16,7 @@ import com.example.shoppinggroceryapp.R
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.user.Address
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity
 import com.example.shoppinggroceryapp.views.userviews.addressview.savedaddress.adapter.AddressAdapter
 import com.example.shoppinggroceryapp.views.userviews.addressview.getaddress.GetNewAddress
 import com.google.android.material.appbar.MaterialToolbar
@@ -32,7 +32,7 @@ class SavedAddressList : Fragment() {
     private lateinit var addressCount:TextView
     private lateinit var savedAddressToolbar:MaterialToolbar
     companion object{
-        var editAddress:Address? = null
+        var editAddressEntity:AddressEntity? = null
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +57,7 @@ class SavedAddressList : Fragment() {
         db = AppDatabase.getAppDatabase(requireContext())
         val userId = MainActivity.userId.toInt()
 
-        savedAddressViewModel.addressList.observe(viewLifecycleOwner){
+        savedAddressViewModel.addressEntityList.observe(viewLifecycleOwner){
             val count = "No of Saved Address: ${it.size}"
             addressCount.text = count
             addressRV.adapter = AddressAdapter(it,this)

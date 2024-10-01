@@ -4,9 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class FAQ (
+data class CustomerRequestEntity(
     @PrimaryKey(autoGenerate = true)
-    val faqId:Int,
-    val question:String,
-    val answer:String
+    val helpId:Int,
+    val userId:Int,
+    val requestedDate:String,
+    val orderId:Int,
+    val request:String
 )

@@ -28,6 +28,6 @@ interface ProductRetailerDataSource {
     fun getBrandWithName(brandName:String):BrandData
     fun getParentCategoryImageForParent(parentCategoryName: String):String
     fun getParentCategoryImage(parentCategoryName: String):String
-    fun addProductImagesInDb(images: Images)
-    fun deleteProductImage(images: Images)
+    fun addProductImagesInDb(image: Images)
+    fun deleteProductImage(image: Images)
 }

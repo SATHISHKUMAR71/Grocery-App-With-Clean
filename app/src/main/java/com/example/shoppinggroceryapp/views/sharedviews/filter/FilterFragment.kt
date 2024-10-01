@@ -14,12 +14,12 @@ import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 
 
-class FilterFragment(var products:MutableList<Product>) : Fragment() {
+class FilterFragment(var productEntities:MutableList<ProductEntity>) : Fragment() {
 
     var category:String?= null
     var type:String? = null
@@ -32,7 +32,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
     private lateinit var availableProducts:TextView
 
     companion object{
-        var list:MutableList<Product>? = null
+        var list:MutableList<ProductEntity>? = null
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +54,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         val applyButton = view.findViewById<MaterialButton>(R.id.applyFilterButton)
         val clearAllButton = view.findViewById<MaterialButton>(R.id.clearAllFilterButton)
         availableProducts = view.findViewById(R.id.availableProducts)
-        availableProducts.text =products.size.toString()
+        availableProducts.text =productEntities.size.toString()
         view.findViewById<MaterialToolbar>(R.id.materialToolbarFilter).setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -62,12 +62,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
 
         dis50.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,50f).size.toString()
+                availableProducts.text = filterViewModel.filterList(productEntities,50f).size.toString()
                 ProductListFragment.productListFilterCount++
                 OfferFragment.offerFilterCount++
             }
             else{
-                availableProducts.text = filterViewModel.filterListBelow(products,50f).size.toString()
+                availableProducts.text = filterViewModel.filterListBelow(productEntities,50f).size.toString()
                 ProductListFragment.productListFilterCount--
                 OfferFragment.offerFilterCount--
             }
@@ -75,12 +75,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         }
         dis40.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,40f).size.toString()
+                availableProducts.text = filterViewModel.filterList(productEntities,40f).size.toString()
                 ProductListFragment.productListFilterCount++
                 OfferFragment.offerFilterCount++
             }
             else{
-                availableProducts.text = filterViewModel.filterListBelow(products,40f).size.toString()
+                availableProducts.text = filterViewModel.filterListBelow(productEntities,40f).size.toString()
                 ProductListFragment.productListFilterCount--
                 OfferFragment.offerFilterCount--
             }
@@ -88,12 +88,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         }
         dis30.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,30f).size.toString()
+                availableProducts.text = filterViewModel.filterList(productEntities,30f).size.toString()
                 ProductListFragment.productListFilterCount++
                 OfferFragment.offerFilterCount++
             }
             else{
-                availableProducts.text = filterViewModel.filterListBelow(products,30f).size.toString()
+                availableProducts.text = filterViewModel.filterListBelow(productEntities,30f).size.toString()
                 ProductListFragment.productListFilterCount--
                 OfferFragment.offerFilterCount--
             }
@@ -101,12 +101,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         }
         dis20.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,20f).size.toString()
+                availableProducts.text = filterViewModel.filterList(productEntities,20f).size.toString()
                 ProductListFragment.productListFilterCount++
                 OfferFragment.offerFilterCount++
             }
             else{
-                availableProducts.text = filterViewModel.filterListBelow(products,20f).size.toString()
+                availableProducts.text = filterViewModel.filterListBelow(productEntities,20f).size.toString()
                 ProductListFragment.productListFilterCount--
                 OfferFragment.offerFilterCount--
             }
@@ -114,12 +114,12 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
         }
         dis10.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                availableProducts.text = filterViewModel.filterList(products,10f).size.toString()
+                availableProducts.text = filterViewModel.filterList(productEntities,10f).size.toString()
                 ProductListFragment.productListFilterCount++
                 OfferFragment.offerFilterCount++
             }
             else{
-                availableProducts.text = filterViewModel.filterListBelow(products,10f).size.toString()
+                availableProducts.text = filterViewModel.filterListBelow(productEntities,10f).size.toString()
                 ProductListFragment.productListFilterCount--
                 OfferFragment.offerFilterCount--
             }
@@ -133,7 +133,7 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
             dis40.isChecked =false
             dis50.isChecked =false
             list = null
-            availableProducts.text =products.size.toString()
+            availableProducts.text =productEntities.size.toString()
         }
         if(OfferFragment.dis10Val==true){
             dis10.isChecked = true
@@ -200,34 +200,34 @@ class FilterFragment(var products:MutableList<Product>) : Fragment() {
     }
 
     fun assignList(){
-        var tmpList:List<Product>
+        var tmpList:List<ProductEntity>
         if(dis50.isChecked){
-            tmpList = filterViewModel.filterList(products,50f)
+            tmpList = filterViewModel.filterList(productEntities,50f)
             availableProducts.text = tmpList.size.toString()
             list = tmpList.toMutableList()
         }
         else if(dis40.isChecked){
-            tmpList = filterViewModel.filterList(products,40f)
+            tmpList = filterViewModel.filterList(productEntities,40f)
             availableProducts.text = tmpList.size.toString()
             list = tmpList.toMutableList()
         }
         else if(dis30.isChecked){
-            tmpList = filterViewModel.filterList(products,30f)
+            tmpList = filterViewModel.filterList(productEntities,30f)
             availableProducts.text = tmpList.size.toString()
             list = tmpList.toMutableList()
         }
         else if(dis20.isChecked){
-            tmpList = filterViewModel.filterList(products,20f)
+            tmpList = filterViewModel.filterList(productEntities,20f)
             availableProducts.text = tmpList.size.toString()
             list = tmpList.toMutableList()
         }
         else if(dis10.isChecked){
-            tmpList = filterViewModel.filterList(products,10f)
+            tmpList = filterViewModel.filterList(productEntities,10f)
             availableProducts.text = tmpList.size.toString()
             list = tmpList.toMutableList()
         }
         else{
-            tmpList = products
+            tmpList = productEntities
             availableProducts.text = tmpList.size.toString()
             list = null
         }

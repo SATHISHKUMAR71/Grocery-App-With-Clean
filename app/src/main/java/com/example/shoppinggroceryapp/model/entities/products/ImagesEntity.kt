@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Images (
+data class ImagesEntity (
     @PrimaryKey(autoGenerate = true)
     val imageId:Long,
     val productId:Long,

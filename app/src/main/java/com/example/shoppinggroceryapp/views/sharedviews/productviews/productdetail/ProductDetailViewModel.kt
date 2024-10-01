@@ -4,20 +4,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.model.dao.RetailerDao
-import com.example.shoppinggroceryapp.model.entities.order.Cart
-import com.example.shoppinggroceryapp.model.entities.products.DeletedProductList
-import com.example.shoppinggroceryapp.model.entities.products.Images
-import com.example.shoppinggroceryapp.model.entities.products.Product
-import com.example.shoppinggroceryapp.model.entities.recentlyvieweditems.RecentlyViewedItems
+import com.example.shoppinggroceryapp.model.entities.order.CartEntity
+import com.example.shoppinggroceryapp.model.entities.products.DeletedProductListEntity
+import com.example.shoppinggroceryapp.model.entities.products.ImagesEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
+import com.example.shoppinggroceryapp.model.entities.recentlyvieweditems.RecentlyViewedItemsEntity
 
 class ProductDetailViewModel(var retailerDao: RetailerDao):ViewModel() {
 
 
-    var cartProducts:MutableLiveData<List<Product>> = MutableLiveData()
+    var cartProducts:MutableLiveData<List<ProductEntity>> = MutableLiveData()
     var brandName:MutableLiveData<String> = MutableLiveData()
-    var isCartAvailable:MutableLiveData<Cart> =MutableLiveData()
-    var similarProductsLiveData:MutableLiveData<List<Product>> = MutableLiveData()
-    var imageList:MutableLiveData<List<Images>> = MutableLiveData()
+    var isCartEntityAvailable:MutableLiveData<CartEntity> =MutableLiveData()
+    var similarProductsLiveData:MutableLiveData<List<ProductEntity>> = MutableLiveData()
+    var imageList:MutableLiveData<List<ImagesEntity>> = MutableLiveData()
     var lock = Any()
     companion object{
         var brandLock = Any()
@@ -39,37 +39,37 @@ class ProductDetailViewModel(var retailerDao: RetailerDao):ViewModel() {
     fun addInRecentlyViewedItems(productId: Long){
         Thread {
             if(retailerDao.getProductsInRecentList(productId,MainActivity.userId.toInt())==null) {
-                retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItems(0, MainActivity.userId.toInt(),productId))
+                retailerDao.addProductInRecentlyViewedItems(RecentlyViewedItemsEntity(0, MainActivity.userId.toInt(),productId))
             }
         }.start()
     }
 
     fun getCartForSpecificProduct(cartId:Int,productId:Int){
         Thread{
-            isCartAvailable.postValue(retailerDao.getSpecificCart(cartId,productId))
+            isCartEntityAvailable.postValue(retailerDao.getSpecificCart(cartId,productId))
         }.start()
     }
 
-    fun addProductInCart(cart:Cart){
+    fun addProductInCart(cartEntity:CartEntity){
         Thread{
             synchronized(lock){
-                retailerDao.addItemsToCart(cart)
+                retailerDao.addItemsToCart(cartEntity)
             }
         }.start()
     }
 
-    fun updateProductInCart(cart:Cart){
+    fun updateProductInCart(cartEntity:CartEntity){
         Thread{
             synchronized(lock){
-                retailerDao.updateCartItems(cart)
+                retailerDao.updateCartItems(cartEntity)
             }
         }.start()
     }
 
-    fun removeProductInCart(cart:Cart){
+    fun removeProductInCart(cartEntity:CartEntity){
         Thread{
             synchronized(lock){
-                retailerDao.removeProductInCart(cart)
+                retailerDao.removeProductInCart(cartEntity)
             }
         }.start()
     }
@@ -85,13 +85,13 @@ class ProductDetailViewModel(var retailerDao: RetailerDao):ViewModel() {
             imageList.postValue(retailerDao.getImagesForProduct(productId))
         }.start()
     }
-    fun removeProduct(product: Product){
+    fun removeProduct(productEntity: ProductEntity){
         Thread {
-            retailerDao.addDeletedProduct(DeletedProductList(productId = product.productId, brandId = product.brandId,
-                categoryName = product.categoryName, productName = product.productName, productDescription = product.productDescription,
-                price = product.price, offer = product.offer, productQuantity = product.productQuantity, mainImage = product.mainImage, isVeg = product.isVeg,
-                manufactureDate = product.manufactureDate, expiryDate = product.expiryDate, availableItems = product.availableItems))
-            retailerDao.deleteProduct(product)
+            retailerDao.addDeletedProduct(DeletedProductListEntity(productId = productEntity.productId, brandId = productEntity.brandId,
+                categoryName = productEntity.categoryName, productName = productEntity.productName, productDescription = productEntity.productDescription,
+                price = productEntity.price, offer = productEntity.offer, productQuantity = productEntity.productQuantity, mainImage = productEntity.mainImage, isVeg = productEntity.isVeg,
+                manufactureDate = productEntity.manufactureDate, expiryDate = productEntity.expiryDate, availableItems = productEntity.availableItems))
+            retailerDao.deleteProduct(productEntity)
         }.start()
     }
 

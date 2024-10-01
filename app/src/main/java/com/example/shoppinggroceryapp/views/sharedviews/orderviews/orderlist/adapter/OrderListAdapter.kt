@@ -13,15 +13,15 @@ import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.userviews.help.Help
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.diffutil.OrderListDiffUtil
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail.OrderDetailFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 
-class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:Fragment,var clickable:Boolean?):RecyclerView.Adapter<OrderListAdapter.OrderLayoutViewHolder>() {
+class OrderListAdapter(var orderedItems:MutableList<OrderDetailsEntity>, var fragment:Fragment, var clickable:Boolean?):RecyclerView.Adapter<OrderListAdapter.OrderLayoutViewHolder>() {
 
     companion object{
-        var cartWithProductList = mutableListOf<MutableList<CartWithProductData>>()
+        var cartWithProductList = mutableListOf<MutableList<CartWithProductDataEntity>>()
     }
 
     inner class OrderLayoutViewHolder(orderView:View):RecyclerView.ViewHolder(orderView){
@@ -91,7 +91,7 @@ class OrderListAdapter(var orderedItems:MutableList<OrderDetails>, var fragment:
         }
     }
 
-    fun setOrders(newList:MutableList<OrderDetails>){
+    fun setOrders(newList:MutableList<OrderDetailsEntity>){
         val orderDiffUtil = OrderListDiffUtil(orderedItems,newList)
         val orderDiffResults = DiffUtil.calculateDiff(orderDiffUtil)
         orderedItems.clear()

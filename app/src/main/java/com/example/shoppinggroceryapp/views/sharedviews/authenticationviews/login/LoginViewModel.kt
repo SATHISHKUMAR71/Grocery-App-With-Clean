@@ -4,31 +4,31 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.MainActivity
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.order.CartMapping
-import com.example.shoppinggroceryapp.model.entities.user.User
+import com.example.shoppinggroceryapp.model.entities.order.CartMappingEntity
+import com.example.shoppinggroceryapp.model.entities.user.UserEntity
 
 class LoginViewModel(var userDao: UserDao) :ViewModel(){
-    var user:MutableLiveData<User> = MutableLiveData()
-    var userName:MutableLiveData<User> = MutableLiveData()
+    var userEntity:MutableLiveData<UserEntity> = MutableLiveData()
+    var userEntityName:MutableLiveData<UserEntity> = MutableLiveData()
 
     fun isUser(userData:String){
         Thread{
-            userName.postValue(userDao.getUserData(userData))
+            userEntityName.postValue(userDao.getUserData(userData))
         }.start()
     }
 
     fun validateUser(email:String,password:String){
         Thread {
-            user.postValue(userDao.getUser(email, password))
+            userEntity.postValue(userDao.getUser(email, password))
         }.start()
     }
 
     fun assignCartForUser(){
         Thread{
-            val cart:CartMapping? = userDao.getCartForUser(user.value?.userId?:-1)
+            val cart:CartMappingEntity? = userDao.getCartForUser(userEntity.value?.userId?:-1)
             if(cart==null){
-               userDao.addCartForUser(CartMapping(0,user.value?.userId?:-1,"available"))
-               val newCart:CartMapping? =  userDao.getCartForUser(user.value?.userId?:-1)
+               userDao.addCartForUser(CartMappingEntity(0,userEntity.value?.userId?:-1,"available"))
+               val newCart:CartMappingEntity? =  userDao.getCartForUser(userEntity.value?.userId?:-1)
                 while (newCart==null) {
                 }
                 MainActivity.cartId = newCart.cartId

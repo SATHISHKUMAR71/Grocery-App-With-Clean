@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.UserDao
 import com.example.shoppinggroceryapp.model.dataclass.CustomerRequestWithName
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 
 class CustomerRequestViewModel(var userDao: UserDao):ViewModel() {
 
     var customerRequestList:MutableLiveData<List<CustomerRequestWithName>> = MutableLiveData()
-    var selectedOrderLiveData:MutableLiveData<OrderDetails> = MutableLiveData()
-    var correspondingCartLiveData:MutableLiveData<List<CartWithProductData>> = MutableLiveData()
+    var selectedOrderLiveData:MutableLiveData<OrderDetailsEntity> = MutableLiveData()
+    var correspondingCartLiveData:MutableLiveData<List<CartWithProductDataEntity>> = MutableLiveData()
 
     fun getCustomerRequest(){
         Thread {

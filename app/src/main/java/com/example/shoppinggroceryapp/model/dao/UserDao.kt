@@ -1,7 +1,6 @@
 package com.example.shoppinggroceryapp.model.dao
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,111 +8,111 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.shoppinggroceryapp.model.dataclass.CustomerRequestWithName
-import com.example.shoppinggroceryapp.model.entities.help.CustomerRequest
-import com.example.shoppinggroceryapp.model.entities.order.Cart
-import com.example.shoppinggroceryapp.model.entities.order.CartMapping
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
-import com.example.shoppinggroceryapp.model.entities.products.Category
-import com.example.shoppinggroceryapp.model.entities.products.DeletedProductList
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
-import com.example.shoppinggroceryapp.model.entities.products.Product
-import com.example.shoppinggroceryapp.model.entities.recentlyvieweditems.RecentlyViewedItems
-import com.example.shoppinggroceryapp.model.entities.search.SearchHistory
-import com.example.shoppinggroceryapp.model.entities.user.User
-import com.example.shoppinggroceryapp.model.entities.user.Address
+import com.example.shoppinggroceryapp.model.entities.help.CustomerRequestEntity
+import com.example.shoppinggroceryapp.model.entities.order.CartEntity
+import com.example.shoppinggroceryapp.model.entities.order.CartMappingEntity
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
+import com.example.shoppinggroceryapp.model.entities.products.CategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.DeletedProductListEntity
+import com.example.shoppinggroceryapp.model.entities.products.ImagesEntity
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
+import com.example.shoppinggroceryapp.model.entities.search.SearchHistoryEntity
+import com.example.shoppinggroceryapp.model.entities.user.UserEntity
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity
 
 @Dao
 interface UserDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addUser(user: User):Long
+    fun addUser(userEntity: UserEntity):Long
 
 
 
-    @Query("SELECT productId FROM Product Where productId=1")
+    @Query("SELECT productId FROM ProductEntity Where productId=1")
     fun initDB():Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSearchQueryInDb(searchHistory: SearchHistory)
+    fun addSearchQueryInDb(searchHistoryEntity: SearchHistoryEntity)
 
-    @Query("SELECT * FROM SearchHistory Where SearchHistory.userId=:userId")
-    fun getSearchHistory(userId: Int):List<SearchHistory>
+    @Query("SELECT * FROM SearchHistoryEntity Where SearchHistoryEntity.userId=:userId")
+    fun getSearchHistory(userId: Int):List<SearchHistoryEntity>
 
-    @Query("SELECT RecentlyViewedItems.productId FROM RecentlyViewedItems Where userId=:user")
+    @Query("SELECT RecentlyViewedItemsEntity.productId FROM RecentlyViewedItemsEntity Where userId=:user")
     fun getRecentlyViewedProducts(user:Int):List<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAddress(address: Address)
+    fun addAddress(addressEntity: AddressEntity)
 
     @Update
-    fun updateAddress(address: Address)
+    fun updateAddress(addressEntity: AddressEntity)
 
     @Update
-    fun updateUser(user: User)
+    fun updateUser(userEntity: UserEntity)
 
-    @Query("SELECT * FROM Address WHERE (Address.userId=:userId)")
-    fun getAddressListForUser(userId:Int):List<Address>
+    @Query("SELECT * FROM AddressEntity WHERE (AddressEntity.userId=:userId)")
+    fun getAddressListForUser(userId:Int):List<AddressEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addCustomerRequest(customerRequest: CustomerRequest)
+    fun addCustomerRequest(customerRequestEntity: CustomerRequestEntity)
 
 
-    @Query("SELECT CustomerRequest.helpId,CustomerRequest.userId,CustomerRequest.requestedDate,CustomerRequest.orderId,CustomerRequest.request,User.userFirstName,User.userLastName,User.userEmail,User.userPhone FROM CustomerRequest JOIN User ON User.userId=CustomerRequest.userId ORDER BY CustomerRequest.helpId DESC")
+    @Query("SELECT CustomerRequestEntity.helpId,CustomerRequestEntity.userId,CustomerRequestEntity.requestedDate,CustomerRequestEntity.orderId,CustomerRequestEntity.request,UserEntity.userFirstName,UserEntity.userLastName,UserEntity.userEmail,UserEntity.userPhone FROM CustomerRequestEntity JOIN UserEntity ON UserEntity.userId=CustomerRequestEntity.userId ORDER BY CustomerRequestEntity.helpId DESC")
     fun getDataFromCustomerReqWithName():List<CustomerRequestWithName>
 
-    @Query("SELECT * FROM Product Order By productId DESC")
-    fun getOnlyProducts():List<Product>
+    @Query("SELECT * FROM ProductEntity Order By productId DESC")
+    fun getOnlyProducts():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '50' Order By productId DESC")
-    fun getOnlyProduct50():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '50' Order By productId DESC")
+    fun getOnlyProduct50():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '40' Order By productId DESC")
-    fun getOnlyProduct40():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '40' Order By productId DESC")
+    fun getOnlyProduct40():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '30' Order By productId DESC")
-    fun getOnlyProduct30():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '30' Order By productId DESC")
+    fun getOnlyProduct30():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '20' Order By productId DESC")
-    fun getOnlyProduct20():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '20' Order By productId DESC")
+    fun getOnlyProduct20():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '10' Order By productId DESC")
-    fun getOnlyProduct10():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '10' Order By productId DESC")
+    fun getOnlyProduct10():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '50' and Product.categoryName=:category ")
-    fun getOnlyProduct50WithCat(category:String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '50' and ProductEntity.categoryName=:category ")
+    fun getOnlyProduct50WithCat(category:String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '40' and Product.categoryName=:category Order By productId DESC")
-    fun getOnlyProduct40WithCat(category:String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '40' and ProductEntity.categoryName=:category Order By productId DESC")
+    fun getOnlyProduct40WithCat(category:String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '30' and Product.categoryName=:category Order By productId DESC")
-    fun getOnlyProduct30WithCat(category:String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '30' and ProductEntity.categoryName=:category Order By productId DESC")
+    fun getOnlyProduct30WithCat(category:String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '20' and Product.categoryName=:category Order By productId DESC")
-    fun getOnlyProduct20WithCat(category:String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '20' and ProductEntity.categoryName=:category Order By productId DESC")
+    fun getOnlyProduct20WithCat(category:String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE Product.offer >= '10' and Product.categoryName=:category Order By productId DESC")
-    fun getOnlyProduct10WithCat(category:String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer >= '10' and ProductEntity.categoryName=:category Order By productId DESC")
+    fun getOnlyProduct10WithCat(category:String):List<ProductEntity>
 
     @Query("SELECT * FROM PRODUCT")
-    fun getOnlyProductsLiveData():LiveData<MutableList<Product>>
+    fun getOnlyProductsLiveData():LiveData<MutableList<ProductEntity>>
 
     @Query("SELECT * FROM user WHERE ((userEmail=:emailOrPhone OR userPhone=:emailOrPhone) AND (userPassword=:password))")
-    fun getUser(emailOrPhone:String,password:String):User
+    fun getUser(emailOrPhone:String,password:String):UserEntity
 
     @Query("SELECT * FROM USER WHERE USER.userId=:userId")
-    fun getUserById(userId: Int):User
+    fun getUserById(userId: Int):UserEntity
 
     @Query("SELECT * FROM USER WHERE USER.userPhone=:phone")
-    fun getUserByPhone(phone: String):User
+    fun getUserByPhone(phone: String):UserEntity
 
     @Query("SELECT * FROM USER WHERE USER.userPassword=:password")
-    fun getUserByPassword(password: String):User
+    fun getUserByPassword(password: String):UserEntity
 
 
     @Query("SELECT * FROM USER WHERE USER.userEmail=:email")
-    fun getUserByEmail(email: String):User
+    fun getUserByEmail(email: String):UserEntity
 
 
     @Query("SELECT userFirstName FROM user WHERE (userId=:id)")
@@ -122,176 +121,185 @@ interface UserDao {
     @Query("SELECT userLastName FROM user WHERE (userId=:id)")
     fun getUserLastName(id:Int):String
 
-    @Query("SELECT * FROM PRODUCT WHERE Product.productId==:productId")
-    fun getProductById(productId:Long):Product
+    @Query("SELECT * FROM PRODUCT WHERE ProductEntity.productId==:productId")
+    fun getProductById(productId:Long):ProductEntity
 
-    @Query("SELECT * FROM DeletedProductList WHERE DeletedProductList.productId==:productId")
-    fun getDeletedProductById(productId:Long):DeletedProductList
+    @Query("SELECT * FROM DeletedProductListEntity WHERE DeletedProductListEntity.productId==:productId")
+    fun getDeletedProductById(productId:Long):DeletedProductListEntity
 
     @Query("SELECT * FROM user WHERE (user.userEmail=:emailOrPhone OR user.userPhone=:emailOrPhone)")
-    fun getUserData(emailOrPhone:String):User
+    fun getUserData(emailOrPhone:String):UserEntity
 
 
-    @Query("SELECT * FROM Product WHERE Product.offer!='-1'")
-    fun getOfferedProducts():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE ProductEntity.offer!='-1'")
+    fun getOfferedProducts():List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE (Product.categoryName =:query) ORDER BY Product.expiryDate DESC")
-    fun getSortedExpiryHighProducts(query: String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE (ProductEntity.categoryName =:query) ORDER BY ProductEntity.expiryDate DESC")
+    fun getSortedExpiryHighProducts(query: String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE (Product.categoryName =:query) ORDER BY Product.expiryDate ASC")
-    fun getSortedExpiryLowProducts(query: String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE (ProductEntity.categoryName =:query) ORDER BY ProductEntity.expiryDate ASC")
+    fun getSortedExpiryLowProducts(query: String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE (Product.categoryName =:query) ORDER BY Product.manufactureDate ASC")
-    fun getSortedManufacturedLowProducts(query: String):List<Product>
-
-
-
-    @Query("SELECT * FROM Product WHERE (Product.categoryName =:query) ORDER BY Product.manufactureDate DESC")
-    fun getSortedManufacturedHighProducts(query: String):List<Product>
-
-    @Query("SELECT * FROM Product WHERE (Product.categoryName =:query) ORDER BY Product.price DESC")
-    fun getSortedPriceHighProducts(query: String):List<Product>
-
-    @Query("SELECT * FROM Product WHERE (Product.categoryName =:query) ORDER BY Product.price ASC")
-    fun getSortedPriceLowProducts(query: String):List<Product>
-
-    @Query("SELECT * FROM Product ORDER BY Product.expiryDate DESC")
-    fun getSortedExpiryHighProductsNoCat():List<Product>
-
-    @Query("SELECT * FROM Product ORDER BY Product.expiryDate ASC")
-    fun getSortedExpiryLowProductsNoCat():List<Product>
-
-    @Query("SELECT * FROM Product ORDER BY Product.manufactureDate ASC")
-    fun getSortedManufacturedLowProductsNoCat():List<Product>
-
-    @Query("SELECT * FROM Product ORDER BY Product.manufactureDate DESC")
-    fun getSortedManufacturedHighProductsNoCat():List<Product>
-
-    @Query("SELECT * FROM Product WHERE offer>-1 ORDER BY Product.manufactureDate DESC")
-    fun getSortedManufacturedHighProductsNoCatWithDiscount():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE (ProductEntity.categoryName =:query) ORDER BY ProductEntity.manufactureDate ASC")
+    fun getSortedManufacturedLowProducts(query: String):List<ProductEntity>
 
 
-    @Query("SELECT * FROM Product ORDER BY Product.price DESC")
-    fun getSortedPriceHighProductsNoCat():List<Product>
 
-    @Query("SELECT * FROM Product ORDER BY Product.price ASC")
-    fun getSortedPriceLowProductsNoCat():List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE (ProductEntity.categoryName =:query) ORDER BY ProductEntity.manufactureDate DESC")
+    fun getSortedManufacturedHighProducts(query: String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE(Product.categoryName =:query)")
-    fun getProductByCategory(query:String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE (ProductEntity.categoryName =:query) ORDER BY ProductEntity.price DESC")
+    fun getSortedPriceHighProducts(query: String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE(PRODUCT.productName=:query)")
-    fun getProductsByName(query: String):List<Product>
+    @Query("SELECT * FROM ProductEntity WHERE (ProductEntity.categoryName =:query) ORDER BY ProductEntity.price ASC")
+    fun getSortedPriceLowProducts(query: String):List<ProductEntity>
 
-    @Query("SELECT * FROM Product WHERE(Product.categoryName =:query)")
-    fun getProductByCategoryLiveData(query:String):LiveData<MutableList<Product>>
+    @Query("SELECT * FROM ProductEntity ORDER BY ProductEntity.expiryDate DESC")
+    fun getSortedExpiryHighProductsNoCat():List<ProductEntity>
 
-    @Query("SELECT * FROM User JOIN Address ON User.userId = Address.userId WHERE User.userId=:id")
-    fun getAddressDetailsForUser(id:Int):Map<User,List<Address>>
+    @Query("SELECT * FROM ProductEntity ORDER BY ProductEntity.expiryDate ASC")
+    fun getSortedExpiryLowProductsNoCat():List<ProductEntity>
 
-    @Query("SELECT Category.categoryName FROM Category WHERE Category.categoryName LIKE '%' || :query || '%'")
+    @Query("SELECT * FROM ProductEntity ORDER BY ProductEntity.manufactureDate ASC")
+    fun getSortedManufacturedLowProductsNoCat():List<ProductEntity>
+
+    @Query("SELECT * FROM ProductEntity ORDER BY ProductEntity.manufactureDate DESC")
+    fun getSortedManufacturedHighProductsNoCat():List<ProductEntity>
+
+    @Query("SELECT * FROM ProductEntity WHERE offer>-1 ORDER BY ProductEntity.manufactureDate DESC")
+    fun getSortedManufacturedHighProductsNoCatWithDiscount():List<ProductEntity>
+
+
+    @Query("SELECT * FROM ProductEntity ORDER BY ProductEntity.price DESC")
+    fun getSortedPriceHighProductsNoCat():List<ProductEntity>
+
+    @Query("SELECT * FROM ProductEntity ORDER BY ProductEntity.price ASC")
+    fun getSortedPriceLowProductsNoCat():List<ProductEntity>
+
+    @Query("SELECT * FROM ProductEntity WHERE(ProductEntity.categoryName =:query)")
+    fun getProductByCategory(query:String):List<ProductEntity>
+
+    @Query("SELECT * FROM ProductEntity WHERE(PRODUCT.productName=:query)")
+    fun getProductsByName(query: String):List<ProductEntity>
+
+    @Query("SELECT * FROM ProductEntity WHERE(ProductEntity.categoryName =:query)")
+    fun getProductByCategoryLiveData(query:String):LiveData<MutableList<ProductEntity>>
+
+    @Query("SELECT * FROM UserEntity JOIN AddressEntity ON UserEntity.userId = AddressEntity.userId WHERE UserEntity.userId=:id")
+    fun getAddressDetailsForUser(id:Int):Map<UserEntity,List<AddressEntity>>
+
+    @Query("SELECT CategoryEntity.categoryName FROM CategoryEntity WHERE CategoryEntity.categoryName LIKE '%' || :query || '%'")
     fun getProductForQuery(query: String):List<String>
 
-    @Query("SELECT Product.productName FROM Product WHERE Product.productName LIKE '%' || :query || '%'")
+    @Query("SELECT ProductEntity.productName FROM ProductEntity WHERE ProductEntity.productName LIKE '%' || :query || '%'")
     fun getProductForQueryName(query: String):List<String>
 
-    @Query("SELECT * FROM Address WHERE Address.addressId=:addressId")
-    fun getAddress(addressId:Int):Address
+    @Query("SELECT * FROM AddressEntity WHERE AddressEntity.addressId=:addressId")
+    fun getAddress(addressId:Int):AddressEntity
 
-    @Query("SELECT Product.*,Category.parentCategoryName,Category.categoryDescription FROM Product JOIN Category ON Product.categoryName=Category.categoryName")
-    fun getProducts():Map<Category,List<Product>>
+    @Query("SELECT ProductEntity.*,CategoryEntity.parentCategoryName,CategoryEntity.categoryDescription FROM ProductEntity JOIN CategoryEntity ON ProductEntity.categoryName=CategoryEntity.categoryName")
+    fun getProducts():Map<CategoryEntity,List<ProductEntity>>
 
-    @Query("SELECT * FROM CartMapping WHERE CartMapping.userId=:userId and CartMapping.status='available'")
-    fun getCartForUser(userId:Int):CartMapping
+    @Query("SELECT * FROM CartMappingEntity WHERE CartMappingEntity.userId=:userId and CartMappingEntity.status='available'")
+    fun getCartForUser(userId:Int):CartMappingEntity
 
     @Insert
-    fun addCartForUser(cartMapping:CartMapping)
+    fun addCartForUser(cartMappingEntity:CartMappingEntity)
 
-    @Query("Select * from OrderDetails Join CartMapping on CartMapping.cartId=OrderDetails.cartId Where CartMapping.userId=:userId")
-    fun getBoughtProductsList(userId: Int):List<OrderDetails>
+    @Query("Select * from OrderDetailsEntity Join CartMappingEntity on CartMappingEntity.cartId=OrderDetailsEntity.cartId Where CartMappingEntity.userId=:userId")
+    fun getBoughtProductsList(userId: Int):List<OrderDetailsEntity>
 
-    @Query("SELECT * From CartMapping Where CartMapping.userId=:userId and CartMapping.status!='available'")
-    fun getCartId(userId:Int):List<CartMapping>
+    @Query("SELECT * From CartMappingEntity Where CartMappingEntity.userId=:userId and CartMappingEntity.status!='available'")
+    fun getCartId(userId:Int):List<CartMappingEntity>
 
-    @Query("SELECT * FROM Cart WHERE Cart.cartId=:cartId")
-    fun getCartItems(cartId:Int):List<Cart>
+    @Query("SELECT * FROM CartEntity WHERE CartEntity.cartId=:cartId")
+    fun getCartItems(cartId:Int):List<CartEntity>
 
-    @Query("SELECT Product.* FROM Cart Join Product ON Product.productId = Cart.productId WHERE Cart.cartId=:cartId")
-    fun getProductsByCartId(cartId:Int):List<Product>
+    @Query("SELECT ProductEntity.* FROM CartEntity Join ProductEntity ON ProductEntity.productId = CartEntity.productId WHERE CartEntity.cartId=:cartId")
+    fun getProductsByCartId(cartId:Int):List<ProductEntity>
 
 
-    @Query("SELECT Product.* FROM Cart Join Product ON Product.productId = Cart.productId WHERE Cart.cartId=:cartId")
-    fun getProductsByCartIdLiveData(cartId:Int):LiveData<MutableList<Product>>
+    @Query("SELECT ProductEntity.* FROM CartEntity Join ProductEntity ON ProductEntity.productId = CartEntity.productId WHERE CartEntity.cartId=:cartId")
+    fun getProductsByCartIdLiveData(cartId:Int):LiveData<MutableList<ProductEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addItemsToCart(cart:Cart)
+    fun addItemsToCart(cartEntity:CartEntity)
 
-    @Query("SELECT Product.* FROM Cart JOIN Product ON Cart.productId=Product.productId WHERE Cart.cartId-:cartId")
-    fun getCartWithProducts(cartId:Int):List<Product>
-
-
-    @Query("SELECT Product.mainImage AS mainImage,Product.productName AS productName,Product.productDescription as productDescription,Cart.totalItems as totalItems,Cart.unitPrice as unitPrice,Product.manufactureDate AS manufactureDate" +
-            ",Product.expiryDate as expiryDate,Product.productQuantity as productQuantity,BrandData.brandName as brandName FROM Cart Join Product ON Product.productId=Cart.productId JOIN BrandData ON BrandData.brandId=Product.brandId WHERE Cart.cartId=:cartId")
-    fun getProductsWithCartId(cartId:Int):List<CartWithProductData>
-
-    @Query("SELECT DeletedProductList.mainImage AS mainImage,DeletedProductList.productName AS productName,DeletedProductList.productDescription as productDescription,Cart.totalItems as totalItems,Cart.unitPrice as unitPrice,DeletedProductList.manufactureDate AS manufactureDate" +
-            ",DeletedProductList.expiryDate as expiryDate,DeletedProductList.productQuantity as productQuantity,BrandData.brandName as brandName FROM Cart Join DeletedProductList ON DeletedProductList.productId=Cart.productId JOIN BrandData ON BrandData.brandId=DeletedProductList.brandId WHERE Cart.cartId=:cartId")
-    fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductData>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE CartMapping.userId=:userID ORDER BY orderId DESC")
-    fun getOrdersForUser(userID:Int):List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (CartMapping.userId=:userID and OrderDetails.deliveryFrequency='Weekly Once') ORDER BY orderId DESC")
-    fun getOrdersForUserWeeklySubscription(userID:Int):List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (OrderDetails.deliveryFrequency='Weekly Once') ORDER BY orderId DESC")
-    fun getOrdersForRetailerWeeklySubscription():List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (CartMapping.userId=:userID and OrderDetails.deliveryFrequency='Daily') ORDER BY orderId DESC")
-    fun getOrdersForUserDailySubscription(userID:Int):List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (OrderDetails.deliveryFrequency='Daily') ORDER BY orderId DESC")
-    fun getOrdersRetailerDailySubscription():List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (CartMapping.userId=:userID and OrderDetails.deliveryFrequency='Monthly Once') ORDER BY orderId DESC")
-    fun getOrdersForUserMonthlySubscription(userID:Int):List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (OrderDetails.deliveryFrequency='Monthly Once') ORDER BY orderId DESC")
-    fun getOrdersForRetailerMonthlySubscription():List<OrderDetails>
-
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (CartMapping.userId=:userID and OrderDetails.deliveryFrequency='Once') ORDER BY orderId DESC")
-    fun getOrdersForUserNoSubscription(userID:Int):List<OrderDetails>
+    @Query("SELECT ProductEntity.* FROM CartEntity JOIN ProductEntity ON CartEntity.productId=ProductEntity.productId WHERE CartEntity.cartId-:cartId")
+    fun getCartWithProducts(cartId:Int):List<ProductEntity>
 
 
-    @Query("SELECT OrderDetails.* FROM OrderDetails JOIN CartMapping ON CartMapping.cartId=OrderDetails.cartId WHERE (OrderDetails.deliveryFrequency='Once') ORDER BY orderId DESC")
-    fun getOrdersForRetailerNoSubscription():List<OrderDetails>
+    @Query(
+        "SELECT ProductEntity.mainImage AS mainImage,ProductEntity.productName AS productName,ProductEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,ProductEntity.manufactureDate AS manufactureDate" +
+                ",ProductEntity.expiryDate as expiryDate,ProductEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM CartEntity Join ProductEntity ON ProductEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=ProductEntity.brandId WHERE CartEntity.cartId=:cartId"
+    )
+    fun getProductsWithCartId(cartId:Int):List<CartWithProductDataEntity>
 
-    @Query("SELECT * FROM OrderDetails WHERE OrderDetails.cartId=:cartId")
-    fun getOrder(cartId:Int):OrderDetails
+    @Query(
+        "SELECT DeletedProductListEntity.mainImage AS mainImage,DeletedProductListEntity.productName AS productName,DeletedProductListEntity.productDescription as productDescription,CartEntity.totalItems as totalItems,CartEntity.unitPrice as unitPrice,DeletedProductListEntity.manufactureDate AS manufactureDate" +
+                ",DeletedProductListEntity.expiryDate as expiryDate,DeletedProductListEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM CartEntity Join DeletedProductListEntity ON DeletedProductListEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=DeletedProductListEntity.brandId WHERE CartEntity.cartId=:cartId"
+    )
+    fun getDeletedProductsWithCartId(cartId:Int):List<CartWithProductDataEntity>
 
-    @Query("SELECT * FROM OrderDetails WHERE OrderDetails.orderId=:orderId")
-    fun getOrderDetails(orderId:Int):OrderDetails
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE CartMappingEntity.userId=:userID ORDER BY orderId DESC")
+    fun getOrdersForUser(userID:Int):List<OrderDetailsEntity>
 
-    @Query("SELECT OrderDetails.*,Product.mainImage AS mainImage,Product.productName AS productName,Product.productDescription as productDescription,Cart.totalItems as totalItems," +
-            "Cart.unitPrice as unitPrice,Product.manufactureDate AS manufactureDate,Product.expiryDate as expiryDate,Product.productQuantity as productQuantity,BrandData.brandName as brandName FROM OrderDetails JOIN Cart ON Cart.cartId=OrderDetails.cartId JOIN Product ON Product.productId=Cart.productId JOIN BrandData ON BrandData.brandId=Product.brandId WHERE OrderDetails.orderId=:orderId")
-    fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetails,List<CartWithProductData>>
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (CartMappingEntity.userId=:userID and OrderDetailsEntity.deliveryFrequency='Weekly Once') ORDER BY orderId DESC")
+    fun getOrdersForUserWeeklySubscription(userID:Int):List<OrderDetailsEntity>
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (OrderDetailsEntity.deliveryFrequency='Weekly Once') ORDER BY orderId DESC")
+    fun getOrdersForRetailerWeeklySubscription():List<OrderDetailsEntity>
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (CartMappingEntity.userId=:userID and OrderDetailsEntity.deliveryFrequency='Daily') ORDER BY orderId DESC")
+    fun getOrdersForUserDailySubscription(userID:Int):List<OrderDetailsEntity>
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (OrderDetailsEntity.deliveryFrequency='Daily') ORDER BY orderId DESC")
+    fun getOrdersRetailerDailySubscription():List<OrderDetailsEntity>
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (CartMappingEntity.userId=:userID and OrderDetailsEntity.deliveryFrequency='Monthly Once') ORDER BY orderId DESC")
+    fun getOrdersForUserMonthlySubscription(userID:Int):List<OrderDetailsEntity>
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (OrderDetailsEntity.deliveryFrequency='Monthly Once') ORDER BY orderId DESC")
+    fun getOrdersForRetailerMonthlySubscription():List<OrderDetailsEntity>
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (CartMappingEntity.userId=:userID and OrderDetailsEntity.deliveryFrequency='Once') ORDER BY orderId DESC")
+    fun getOrdersForUserNoSubscription(userID:Int):List<OrderDetailsEntity>
+
+
+    @Query("SELECT OrderDetailsEntity.* FROM OrderDetailsEntity JOIN CartMappingEntity ON CartMappingEntity.cartId=OrderDetailsEntity.cartId WHERE (OrderDetailsEntity.deliveryFrequency='Once') ORDER BY orderId DESC")
+    fun getOrdersForRetailerNoSubscription():List<OrderDetailsEntity>
+
+    @Query("SELECT * FROM OrderDetailsEntity WHERE OrderDetailsEntity.cartId=:cartId")
+    fun getOrder(cartId:Int):OrderDetailsEntity
+
+    @Query("SELECT * FROM OrderDetailsEntity WHERE OrderDetailsEntity.orderId=:orderId")
+    fun getOrderDetails(orderId:Int):OrderDetailsEntity
+
+    @Query("SELECT * FROM ImagesEntity WHERE productId=:productId")
+    fun getImagesForProduct(productId: Long):List<ImagesEntity>
+
+    @Query(
+        "SELECT OrderDetailsEntity.*,ProductEntity.mainImage AS mainImage,ProductEntity.productName AS productName,ProductEntity.productDescription as productDescription,CartEntity.totalItems as totalItems," +
+                "CartEntity.unitPrice as unitPrice,ProductEntity.manufactureDate AS manufactureDate,ProductEntity.expiryDate as expiryDate,ProductEntity.productQuantity as productQuantity,BrandDataEntity.brandName as brandName FROM OrderDetailsEntity JOIN CartEntity ON CartEntity.cartId=OrderDetailsEntity.cartId JOIN ProductEntity ON ProductEntity.productId=CartEntity.productId JOIN BrandDataEntity ON BrandDataEntity.brandId=ProductEntity.brandId WHERE OrderDetailsEntity.orderId=:orderId"
+    )
+    fun getOrderWithProductsWithOrderId(orderId: Int):Map<OrderDetailsEntity,List<CartWithProductDataEntity>>
 
     @Update
-    fun updateParentCategory(parentCategory: ParentCategory)
+    fun updateParentCategory(parentCategoryEntity: ParentCategoryEntity)
 
 
 
     @Delete
-    fun removeProductInCart(cart: Cart)
+    fun removeProductInCart(cartEntity: CartEntity)
 
-    @Query("SELECT BrandData.brandName FROM BrandData where BrandData.brandId=:id")
+    @Query("SELECT BrandDataEntity.brandName FROM BrandDataEntity where BrandDataEntity.brandId=:id")
     fun getBrandName(id:Long):String
 
     @Update
-    fun updateCartMapping(cartMapping: CartMapping)
-    @Query("SELECT * FROM Cart WHERE Cart.cartId=:cartId and Cart.productId=:productId")
-    fun getSpecificCart(cartId:Int,productId:Int):Cart
+    fun updateCartMapping(cartMappingEntity: CartMappingEntity)
+    @Query("SELECT * FROM CartEntity WHERE CartEntity.cartId=:cartId and CartEntity.productId=:productId")
+    fun getSpecificCart(cartId:Int,productId:Int):CartEntity
     @Update
-    fun updateCartItems(cart: Cart)
+    fun updateCartItems(cartEntity: CartEntity)
 
 }

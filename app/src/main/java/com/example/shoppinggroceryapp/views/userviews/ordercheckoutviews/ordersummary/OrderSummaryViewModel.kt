@@ -3,38 +3,37 @@ package com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.orders
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.RetailerDao
-import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.order.DailySubscription
-import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnce
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.order.TimeSlot
-import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnce
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 
 class OrderSummaryViewModel(var retailerDao: RetailerDao):ViewModel() {
 
-    var cartItems:MutableLiveData<List<CartWithProductData>> = MutableLiveData()
+    var cartItems:MutableLiveData<List<CartWithProductDataEntity>> = MutableLiveData()
     fun getProductsWithCartId(cartId:Int){
         Thread{
             cartItems.postValue(retailerDao.getProductsWithCartId(cartId))
         }.start()
     }
 
-    fun updateOrderDetails(orderDetails: OrderDetails){
+    fun updateOrderDetails(orderDetailsEntity: OrderDetailsEntity){
         Thread{
-            retailerDao.updateOrderDetails(orderDetails)
+            retailerDao.updateOrderDetails(orderDetailsEntity)
         }.start()
     }
-    fun updateTimeSlot(timeSlot: TimeSlot){
+    fun updateTimeSlot(timeSlotEntity: TimeSlotEntity){
         Thread{
-            retailerDao.updateTimeSlot(timeSlot)
+            retailerDao.updateTimeSlot(timeSlotEntity)
         }.start()
     }
-    fun updateMonthly(monthlyOnce: MonthlyOnce){
+    fun updateMonthly(monthlyOnceEntity: MonthlyOnceEntity){
         Thread{
-            retailerDao.addMonthlyOnceSubscription(monthlyOnce)
-            deleteDaily(monthlyOnce.orderId)
-            deleteWeekly(monthlyOnce.orderId)
+            retailerDao.addMonthlyOnceSubscription(monthlyOnceEntity)
+            deleteDaily(monthlyOnceEntity.orderId)
+            deleteWeekly(monthlyOnceEntity.orderId)
         }.start()
     }
     fun deleteMonthly(orderId:Int){
@@ -54,19 +53,19 @@ class OrderSummaryViewModel(var retailerDao: RetailerDao):ViewModel() {
             }
         }.start()
     }
-    fun updateDaily(dailySubscription: DailySubscription){
+    fun updateDaily(dailySubscriptionEntity: DailySubscriptionEntity){
         Thread{
-            retailerDao.addDailySubscription(dailySubscription)
-            deleteWeekly(dailySubscription.orderId)
-            deleteMonthly(dailySubscription.orderId)
+            retailerDao.addDailySubscription(dailySubscriptionEntity)
+            deleteWeekly(dailySubscriptionEntity.orderId)
+            deleteMonthly(dailySubscriptionEntity.orderId)
         }.start()
     }
 
-    fun updateWeekly(weeklyOnce: WeeklyOnce){
+    fun updateWeekly(weeklyOnceEntity: WeeklyOnceEntity){
         Thread{
-            retailerDao.addWeeklyOnceSubscription(weeklyOnce)
-            deleteDaily(weeklyOnce.orderId)
-            deleteMonthly(weeklyOnce.orderId)
+            retailerDao.addWeeklyOnceSubscription(weeklyOnceEntity)
+            deleteDaily(weeklyOnceEntity.orderId)
+            deleteMonthly(weeklyOnceEntity.orderId)
         }.start()
     }
 

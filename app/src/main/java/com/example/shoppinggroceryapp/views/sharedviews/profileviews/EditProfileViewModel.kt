@@ -3,17 +3,17 @@ package com.example.shoppinggroceryapp.views.sharedviews.profileviews
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.UserDao
-import com.example.shoppinggroceryapp.model.entities.products.Product
-import com.example.shoppinggroceryapp.model.entities.user.User
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
+import com.example.shoppinggroceryapp.model.entities.user.UserEntity
 
 class EditProfileViewModel(var userDao: UserDao):ViewModel() {
 
-    var recentlyBoughtList:MutableLiveData<MutableList<Product>> = MutableLiveData()
-    var user:MutableLiveData<User> = MutableLiveData()
+    var recentlyBoughtList:MutableLiveData<MutableList<ProductEntity>> = MutableLiveData()
+    var userEntity:MutableLiveData<UserEntity> = MutableLiveData()
     fun saveDetails(oldEmail:String,firstName:String,lastName:String,email:String,phone: String,image:String){
         Thread {
             val user = userDao.getUserData(oldEmail)
-            val userTmp = User(
+            val userEntityTmp = UserEntity(
                 userId = user.userId,
                 userImage = image,
                 userFirstName = firstName,
@@ -23,14 +23,14 @@ class EditProfileViewModel(var userDao: UserDao):ViewModel() {
                 userPassword = user.userPassword,
                 dateOfBirth = user.dateOfBirth,
                 isRetailer = user.isRetailer)
-            userDao.updateUser(userTmp)
+            userDao.updateUser(userEntityTmp)
         }.start()
     }
 
     fun saveUserImage(oldEmail:String,mainImage:String){
         Thread {
             val user = userDao.getUserData(oldEmail)
-            userDao.updateUser(User(
+            userDao.updateUser(UserEntity(
                 userId = user.userId,
                 userImage = mainImage,
                 userFirstName = user.userFirstName,
@@ -46,7 +46,7 @@ class EditProfileViewModel(var userDao: UserDao):ViewModel() {
 
     fun getPurchasedProducts(userId:Int){
         Thread{
-            val list = mutableListOf<Product>()
+            val list = mutableListOf<ProductEntity>()
             for(i in userDao.getBoughtProductsList(userId)){
                 for(j in userDao.getProductsByCartId(i.cartId)){
                     if(j !in list){
@@ -61,13 +61,13 @@ class EditProfileViewModel(var userDao: UserDao):ViewModel() {
 
     fun getUser(emailOrPhone:String){
         Thread{
-            user.postValue(userDao.getUserData(emailOrPhone))
+            userEntity.postValue(userDao.getUserData(emailOrPhone))
         }.start()
     }
 
-    fun savePassword(user:User){
+    fun savePassword(userEntity:UserEntity){
         Thread {
-            userDao.updateUser(user)
+            userDao.updateUser(userEntity)
         }.start()
     }
 }

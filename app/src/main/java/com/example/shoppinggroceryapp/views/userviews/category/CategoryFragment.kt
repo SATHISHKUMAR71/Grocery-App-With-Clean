@@ -15,7 +15,7 @@ import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
 import com.example.shoppinggroceryapp.model.dataclass.ChildCategoryName
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
 import com.example.shoppinggroceryapp.views.userviews.category.adapter.MainCategoryAdapter
 import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 
@@ -50,7 +50,7 @@ class CategoryFragment: Fragment() {
         FilterFragment.list = null
         val view =  inflater.inflate(R.layout.fragment_category, container, false)
         var childList:List<List<ChildCategoryName>>? = null
-        var parentList:List<ParentCategory>? = null
+        var parentList:List<ParentCategoryEntity>? = null
         val categoryViewModel = ViewModelProvider(this,
             CategoryViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getProductDao())
         )[CategoryViewModel::class.java]

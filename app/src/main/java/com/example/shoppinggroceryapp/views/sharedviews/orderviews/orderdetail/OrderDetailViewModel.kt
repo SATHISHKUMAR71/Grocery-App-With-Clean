@@ -3,26 +3,22 @@ package com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderdetail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.RetailerDao
-import com.example.shoppinggroceryapp.model.entities.order.DailySubscription
-import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnce
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.order.TimeSlot
-import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnce
-import com.example.shoppinggroceryapp.model.entities.user.Address
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity
 
 class OrderDetailViewModel(var retailerDao: RetailerDao):ViewModel() {
-    var selectedAddress:MutableLiveData<Address> = MutableLiveData()
+    var selectedAddressEntity:MutableLiveData<AddressEntity> = MutableLiveData()
     var date:MutableLiveData<Int> = MutableLiveData()
     var timeSlot:MutableLiveData<Int> = MutableLiveData()
-    fun updateOrderDetails(orderDetails: OrderDetails){
+    fun updateOrderDetails(orderDetailsEntity: OrderDetailsEntity){
         Thread{
-            retailerDao.updateOrderDetails(orderDetails)
+            retailerDao.updateOrderDetails(orderDetailsEntity)
         }.start()
     }
 
     fun getSelectedAddress(addressId:Int){
         Thread{
-            selectedAddress.postValue(retailerDao.getAddress(addressId))
+            selectedAddressEntity.postValue(retailerDao.getAddress(addressId))
         }.start()
     }
 

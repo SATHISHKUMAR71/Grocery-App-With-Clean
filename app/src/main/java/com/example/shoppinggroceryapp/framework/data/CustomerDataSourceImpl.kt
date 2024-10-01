@@ -11,13 +11,17 @@ import com.core.domain.products.ParentCategory
 import com.core.domain.products.Product
 import com.core.domain.user.Address
 import com.core.domain.user.User
-import com.example.shoppinggroceryapp.model.entities.user.User as UserEntity
-import com.example.shoppinggroceryapp.model.entities.user.Address as AddressEntity
-import com.example.shoppinggroceryapp.model.entities.help.CustomerRequest as CustomerRequestEntity
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails as OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.user.UserEntity as UserEntity
+import com.example.shoppinggroceryapp.model.entities.user.AddressEntity as AddressEntity
+import com.example.shoppinggroceryapp.model.entities.help.CustomerRequestEntity as CustomerRequestEntity
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity as OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.order.CartEntity as CartEntity
+import com.example.shoppinggroceryapp.model.entities.order.CartMappingEntity as CartMappingEntity
 import com.example.shoppinggroceryapp.model.dao.UserDao
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 
-class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource {
+class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource,ConvertionHelper() {
     override fun addNewUser(user: User) {
         userDao.addUser(convertUserToUserEntity(user))
     }
@@ -55,168 +59,166 @@ class CustomerDataSourceImpl(private var userDao: UserDao):CustomerDataSource {
     }
 
     override fun addCartForUser(cartMapping: CartMapping) {
-        TODO("Not yet implemented")
+        userDao.addCartForUser(CartMappingEntity(cartMapping.cartId,cartMapping.userId,cartMapping.status))
     }
 
     override fun getCartItems(cartId: Int): List<Cart> {
-        TODO("Not yet implemented")
+        return userDao.getCartItems(cartId).map { Cart(it.cartId,it.productId,it.totalItems,it.unitPrice) }
     }
 
     override fun getProductsByCartId(cartId: Int): List<Product> {
-        TODO("Not yet implemented")
+        return userDao.getProductsByCartId(cartId).map { Product(it.productId,it.brandId,it.categoryName,it.productName,it.productDescription
+        ,it.price,it.offer,it.productQuantity,it.mainImage,it.isVeg,it.manufactureDate,it.expiryDate,it.availableItems) }
     }
 
     override fun addItemsToCart(cart: Cart) {
-        TODO("Not yet implemented")
+        userDao.addItemsToCart(CartEntity(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice))
     }
 
     override fun getProductsWithCartId(cartId: Int): List<CartWithProductData> {
-        TODO("Not yet implemented")
+        return (userDao.getProductsWithCartId(cartId)).map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
+        ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
     }
 
     override fun getDeletedProductsWithCartId(cartId: Int): List<CartWithProductData> {
-        TODO("Not yet implemented")
+        return userDao.getDeletedProductsWithCartId(cartId).map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice
+            ,it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
     }
 
     override fun removeProductInCart(cart: Cart) {
-        TODO("Not yet implemented")
+        userDao.removeProductInCart(CartEntity(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice))
     }
 
     override fun updateCartMapping(cartMapping: CartMapping) {
-        TODO("Not yet implemented")
+        userDao.updateCartMapping(CartMappingEntity(cartMapping.cartId,cartMapping.userId,cartMapping.status))
     }
 
     override fun getSpecificCart(cartId: Int, productId: Int): Cart {
-        TODO("Not yet implemented")
+        var cart = userDao.getSpecificCart(cartId,productId)
+        return Cart(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice)
     }
 
     override fun updateCartItems(cart: Cart) {
-        TODO("Not yet implemented")
+        userDao.updateCartItems(CartEntity(cart.cartId,cart.productId,cart.totalItems,cart.unitPrice))
     }
 
     override fun getBoughtProductsList(userId: Int): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getBoughtProductsList(userId))
     }
 
     override fun getOrdersForUser(userID: Int): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForUser(userID))
     }
 
     override fun getOrdersForUserWeeklySubscription(userID: Int): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForUserWeeklySubscription(userID))
     }
 
     override fun getOrdersForUserDailySubscription(userID: Int): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForUserDailySubscription(userID))
     }
 
     override fun getOrdersForUserMonthlySubscription(userID: Int): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForUserMonthlySubscription(userID))
     }
 
     override fun getOrdersForUserNoSubscription(userID: Int): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForUserNoSubscription(userID))
     }
 
     override fun getOrdersForRetailerWeeklySubscription(): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForRetailerWeeklySubscription())
     }
 
     override fun getOrdersRetailerDailySubscription(): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersRetailerDailySubscription())
     }
 
     override fun getOrdersForRetailerMonthlySubscription(): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForRetailerMonthlySubscription())
     }
 
     override fun getOrdersForRetailerNoSubscription(): List<OrderDetails> {
-        TODO("Not yet implemented")
+        return convertOrderDetailsEntityToOrderDetails(userDao.getOrdersForRetailerNoSubscription())
     }
 
     override fun getOrder(cartId: Int): OrderDetails {
-        TODO("Not yet implemented")
+        return convertOrderEntityToOrderDetails(userDao.getOrder(cartId))
     }
 
     override fun getOrderWithProductsWithOrderId(orderId: Int): Map<OrderDetails, List<CartWithProductData>> {
-        TODO("Not yet implemented")
+        val map:MutableMap<OrderDetails, List<CartWithProductData>> = mutableMapOf()
+        val orderDetailsMap = userDao.getOrderWithProductsWithOrderId(orderId)
+        for( i in orderDetailsMap){
+            map[convertOrderEntityToOrderDetails(i.key)] = i.value.map { CartWithProductData(it.mainImage,it.productName,it.productDescription,it.totalItems,it.unitPrice,
+                it.manufactureDate,it.expiryDate,it.productQuantity,it.brandName) }
+        }
+        return map
     }
 
     override fun getOrderDetailsWithOrderId(orderId: Int): OrderDetails {
-        TODO("Not yet implemented")
+        return convertOrderEntityToOrderDetails(userDao.getOrderDetails(orderId))
     }
 
     override fun getProductById(productId: Long): Product {
-        TODO("Not yet implemented")
+        val product = userDao.getProductById(productId)
+        return convertProductEntityToProduct(product)
     }
 
     override fun getRecentlyViewedProducts(user: Int): List<Int> {
-        TODO("Not yet implemented")
+        return userDao.getRecentlyViewedProducts(user)
     }
 
     override fun getOnlyProducts(): List<Product> {
-        TODO("Not yet implemented")
+        return userDao.getOnlyProducts().map { convertProductEntityToProduct(it) }
     }
 
     override fun getOfferedProducts(): List<Product> {
-        TODO("Not yet implemented")
+        return userDao.getOfferedProducts().map { convertProductEntityToProduct(it) }
     }
 
     override fun getProductByCategory(query: String): List<Product> {
-        TODO("Not yet implemented")
+        return userDao.getProductByCategory(query).map { convertProductEntityToProduct(it) }
     }
 
     override fun getProductsByName(query: String): List<Product> {
-        TODO("Not yet implemented")
+        return userDao.getProductsByName(query).map { convertProductEntityToProduct(it) }
     }
 
     override fun getProductForQuery(query: String): List<String> {
-        TODO("Not yet implemented")
+        return userDao.getProductForQuery(query)
     }
 
     override fun getProductForQueryName(query: String): List<String> {
-        TODO("Not yet implemented")
+        return userDao.getProductForQueryName(query)
     }
 
     override fun getBrandName(id: Long): String {
-        TODO("Not yet implemented")
+        return userDao.getBrandName(id)
     }
 
     override fun updateParentCategory(parentCategory: ParentCategory) {
-        TODO("Not yet implemented")
+        userDao.updateParentCategory(ParentCategoryEntity(parentCategory.parentCategoryName,parentCategory.parentCategoryImage,parentCategory.parentCategoryDescription,parentCategory.isEssential))
     }
 
     override fun getImagesForProduct(productId: Long): List<Images> {
-        TODO("Not yet implemented")
+        return userDao.getImagesForProduct(productId).map { Images(it.imageId,it.productId,it.images) }
     }
 
     override fun getAddress(addressId: Int): Address {
-        TODO("Not yet implemented")
+        val address = userDao.getAddress(addressId)
+        return Address(address.addressId,address.userId,address.addressContactName,address.addressContactNumber,address.buildingName
+        ,address.streetName,address.city,address.state,address.country,address.postalCode)
     }
 
     override fun addAddress(address: Address) {
-        TODO("Not yet implemented")
+        userDao.addAddress(AddressEntity(address.addressId,address.userId,address.addressContactName,address.addressContactNumber,address.buildingName
+            ,address.streetName,address.city,address.state,address.country,address.postalCode))
     }
 
     override fun getAddressListForUser(userId: Int): List<Address> {
-        TODO("Not yet implemented")
+        return userDao.getAddressListForUser(userId).map { address -> Address(address.addressId,address.userId,address.addressContactName,address.addressContactNumber,address.buildingName
+            ,address.streetName,address.city,address.state,address.country,address.postalCode) }
     }
 
-    private fun convertUserToUserEntity(user: User):UserEntity{
-        return UserEntity(user.userId,user.userImage,user.userFirstName,user.userLastName,user.userEmail,user.userPhone,
-            user.userPassword,user.dateOfBirth,user.isRetailer)
-    }
-    private fun convertUserEntityToUser(user: UserEntity):User{
-        return User(user.userId,user.userImage,user.userFirstName,user.userLastName,user.userEmail,user.userPhone,
-            user.userPassword,user.dateOfBirth,user.isRetailer)
-    }
-
-    private fun convertOrderDetailsToOrderDetailsEntity(orderDetails: OrderDetails):OrderDetailsEntity{
-        return OrderDetailsEntity(orderDetails.orderId,orderDetails.cartId,orderDetails.addressId,orderDetails.paymentMode,
-            orderDetails.deliveryFrequency,orderDetails.paymentStatus,orderDetails.deliveryStatus,orderDetails.deliveryDate,orderDetails.orderedDate)
-    }
-    private fun convertOrderEntityToOrderDetails(orderDetailsEntity: OrderDetailsEntity):OrderDetails{
-        return OrderDetails(orderDetailsEntity.orderId,orderDetailsEntity.cartId,orderDetailsEntity.addressId,orderDetailsEntity.paymentMode,
-            orderDetailsEntity.deliveryFrequency,orderDetailsEntity.paymentStatus,orderDetailsEntity.deliveryStatus,orderDetailsEntity.deliveryDate,orderDetailsEntity.orderedDate)
-    }
 }

@@ -23,7 +23,7 @@ import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.imagehandlers.SetProductImage
 import com.example.shoppinggroceryapp.views.userviews.ordercheckoutviews.ordersummary.OrderSummaryFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
@@ -149,7 +149,7 @@ class OrderDetailFragment : Fragment() {
 
 
         orderDetailViewModel.getSelectedAddress(OrderListFragment.selectedOrder!!.addressId)
-        orderDetailViewModel.selectedAddress.observe(viewLifecycleOwner){ address ->
+        orderDetailViewModel.selectedAddressEntity.observe(viewLifecycleOwner){ address ->
             view.findViewById<TextView>(R.id.addressOwnerName).text = address.addressContactName
             val addressText = with(address){
                 "$buildingName, $streetName, $city, $state, $postalCode"
@@ -368,7 +368,7 @@ class OrderDetailFragment : Fragment() {
     }
 
 
-    private fun addView(container:LinearLayout,productInfo:CartWithProductData){
+    private fun addView(container:LinearLayout,productInfo:CartWithProductDataEntity){
         val newView =LayoutInflater.from(requireContext()).inflate(R.layout.ordered_product_layout,container,false)
         newView.findViewById<ImageView>(R.id.orderedProductImage)
         SetProductImage.setImageView(newView.findViewById(R.id.orderedProductImage),productInfo.mainImage?:"",

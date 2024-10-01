@@ -27,7 +27,7 @@ import com.example.shoppinggroceryapp.views.retailerviews.addeditproduct.AddOrEd
 import com.example.shoppinggroceryapp.views.sharedviews.sort.BottomSheetDialogFragment
 import com.example.shoppinggroceryapp.views.sharedviews.sort.ProductSorter
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.adapter.ProductListAdapter
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productdetail.ProductDetailFragment
@@ -42,7 +42,7 @@ import java.io.File
 
 class ProductListFragment : Fragment() {
     companion object{
-        var selectedProduct:MutableLiveData<Product> = MutableLiveData()
+        var selectedProductEntity:MutableLiveData<ProductEntity> = MutableLiveData()
         var selectedPos:Int? = null
         var totalCost:MutableLiveData<Float> = MutableLiveData(0f)
         var position = 0
@@ -57,13 +57,13 @@ class ProductListFragment : Fragment() {
     var category:String? = null
     private lateinit var productListViewModel: ProductListViewModel
     private lateinit var fileDir:File
-    private var realProductList = mutableListOf<Product>()
+    private var realProductEntityList = mutableListOf<ProductEntity>()
     private lateinit var filterCountText:TextView
     private lateinit var productRV:RecyclerView
     var searchViewOpened = false
-    private lateinit var selectedProduct: Product
+    private lateinit var selectedProductEntity: ProductEntity
     private lateinit var toolbar:MaterialToolbar
-    private var productList:MutableList<Product> = mutableListOf()
+    private var productEntityList:MutableList<ProductEntity> = mutableListOf()
     private lateinit var adapter: ProductListAdapter
     private lateinit var noItemsImage:ImageView
     private lateinit var notifyNoItems:TextView
@@ -150,7 +150,7 @@ class ProductListFragment : Fragment() {
         searchViewOpened = (arguments?.getBoolean("searchViewOpened")==true)
         productListViewModel.getCartItems(MainActivity.cartId.toInt())
 
-        productListViewModel.cartList.observe(viewLifecycleOwner){
+        productListViewModel.cartEntityList.observe(viewLifecycleOwner){
             FindNumberOfCartItems.productCount.value = it.size
         }
 
@@ -166,8 +166,8 @@ class ProductListFragment : Fragment() {
         }
         filterButton.setOnClickListener {
             productListFilterCount = 0
-            productList = realProductList
-            var filterFragment = FilterFragment(realProductList).apply {
+            productEntityList = realProductEntityList
+            var filterFragment = FilterFragment(realProductEntityList).apply {
                 arguments = Bundle().apply { putString("category",category) }
             }
             FragmentTransaction.navigateWithBackstack(parentFragmentManager,filterFragment,"Filter")
@@ -185,7 +185,7 @@ class ProductListFragment : Fragment() {
 
         totalCost.value = 0f
         productListViewModel.getCartItems(cartId = MainActivity.cartId)
-        productListViewModel.cartList.observe(viewLifecycleOwner){
+        productListViewModel.cartEntityList.observe(viewLifecycleOwner){
             for(cart in it){
                 val totalItems = cart.totalItems
                 val price = cart.unitPrice
@@ -213,24 +213,24 @@ class ProductListFragment : Fragment() {
         else{
             productListViewModel.getProductsByCategory(category!!)
         }
-        productListViewModel.productList.observe(viewLifecycleOwner){
-            if(productList.isEmpty()) {
-                productList = it.toMutableList()
+        productListViewModel.productEntityList.observe(viewLifecycleOwner){
+            if(productEntityList.isEmpty()) {
+                productEntityList = it.toMutableList()
             }
-            realProductList = it.toMutableList()
+            realProductEntityList = it.toMutableList()
             if(FilterFragment.list==null) {
 //                adapter.setProducts(it)
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
                     adapter.setProducts(it)
                 }
                 else{
-                    adapter.setProducts(productList)
+                    adapter.setProducts(productEntityList)
                 }
                 if (productRV.adapter == null) {
                     productRV.adapter = adapter
                     productRV.layoutManager = LinearLayoutManager(context)
                 }
-                if (productList.size == 0) {
+                if (productEntityList.size == 0) {
                     hideProductRV()
                 }
                 else{
@@ -238,24 +238,24 @@ class ProductListFragment : Fragment() {
                 }
             }
         }
-        productListViewModel.productCategoryList.observe(viewLifecycleOwner){
-            if(productList.isEmpty()) {
-                productList = it.toMutableList()
+        productListViewModel.productEntityCategoryList.observe(viewLifecycleOwner){
+            if(productEntityList.isEmpty()) {
+                productEntityList = it.toMutableList()
             }
-            realProductList = it.toMutableList()
+            realProductEntityList = it.toMutableList()
             if(FilterFragment.list==null) {
                 if(BottomSheetDialogFragment.selectedOption.value==null) {
                     adapter.setProducts(it)
                 }
                 else{
-                    adapter.setProducts(productList)
+                    adapter.setProducts(productEntityList)
                 }
                 if (productRV.adapter == null) {
                     productRV.adapter = adapter
                     productRV.layoutManager = LinearLayoutManager(requireContext())
                 }
 //                adapter.setProducts(productList)
-                if (productList.size == 0) {
+                if (productEntityList.size == 0) {
                     hideProductRV()
                 }
                 else{
@@ -270,45 +270,45 @@ class ProductListFragment : Fragment() {
         val sorter  = ProductSorter()
         BottomSheetDialogFragment.selectedOption.observe(viewLifecycleOwner){
             if(it!=null) {
-                var newList = listOf<Product>()
+                var newList = listOf<ProductEntity>()
                 if (it == 0) {
                     if (FilterFragment.list == null) {
-                        newList = sorter.sortByDate(productList)
+                        newList = sorter.sortByDate(productEntityList)
                     } else {
                         newList = sorter.sortByDate(FilterFragment.list!!)
                     }
                     adapter.setProducts(newList)
                 } else if (it == 1) {
                     if (FilterFragment.list == null) {
-                        newList = sorter.sortByExpiryDate(productList)
+                        newList = sorter.sortByExpiryDate(productEntityList)
                     } else {
                         newList = sorter.sortByExpiryDate(FilterFragment.list!!)
                     }
                     adapter.setProducts(newList)
                 } else if (it == 2) {
                     if (FilterFragment.list == null) {
-                        newList = sorter.sortByDiscount(productList)
+                        newList = sorter.sortByDiscount(productEntityList)
                     } else {
                         newList = sorter.sortByDiscount(FilterFragment.list!!)
                     }
                     adapter.setProducts(newList)
                 } else if (it == 3) {
                     if (FilterFragment.list == null) {
-                        newList = sorter.sortByPriceLowToHigh(productList)
+                        newList = sorter.sortByPriceLowToHigh(productEntityList)
                     } else {
                         newList = sorter.sortByPriceLowToHigh(FilterFragment.list!!)
                     }
                     adapter.setProducts(newList)
                 } else if (it == 4) {
                     if (FilterFragment.list == null) {
-                        newList = sorter.sortByPriceHighToLow(productList)
+                        newList = sorter.sortByPriceHighToLow(productEntityList)
                     } else {
                         newList = sorter.sortByPriceHighToLow(FilterFragment.list!!)
                     }
                     adapter.setProducts(newList)
                 }
                 if (newList.isNotEmpty()) {
-                    productList = newList.toMutableList()
+                    productEntityList = newList.toMutableList()
                     if (FilterFragment.list != null) {
                         if (FilterFragment.list!!.size == newList.size) {
                             FilterFragment.list = newList.toMutableList()
@@ -334,7 +334,7 @@ class ProductListFragment : Fragment() {
             view?.layoutParams = params
             fab?.visibility = View.VISIBLE
             view?.findViewById<FloatingActionButton>(R.id.addProductsToInventory)?.setOnClickListener {
-                Companion.selectedProduct.value = null
+                Companion.selectedProductEntity.value = null
                 FragmentTransaction.navigateWithBackstack(parentFragmentManager, AddOrEditProductFragment(),"Edit in Product Fragment")
             }
             view?.findViewById<LinearLayout>(R.id.linearLayout8)?.visibility = View.GONE
@@ -390,8 +390,8 @@ class ProductListFragment : Fragment() {
         if(FilterFragment.list?.isNotEmpty()==true){
             adapter.setProducts(FilterFragment.list!!)
         }
-        else if (productList.isNotEmpty()) {
-            adapter.setProducts(productList)
+        else if (productEntityList.isNotEmpty()) {
+            adapter.setProducts(productEntityList)
         }
         productRV.scrollToPosition(productListFirstVisiblePos ?: 0)
     }
@@ -409,7 +409,7 @@ class ProductListFragment : Fragment() {
         InitialFragment.hideBottomNav.value = false
         productRV.stopScroll()
         productListFirstVisiblePos = (productRV.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-        productListViewModel.cartList.value = mutableListOf()
+        productListViewModel.cartEntityList.value = mutableListOf()
         if(InitialFragment.searchQueryList.size <2){
             InitialFragment.searchHint.value = ""
             InitialFragment.searchQueryList = mutableListOf()
@@ -451,7 +451,7 @@ class ProductListFragment : Fragment() {
     fun checkDeletedItem(){
         try {
             if (ProductDetailFragment.deletePosition != null) {
-                productList.removeAt(ProductDetailFragment.deletePosition!!)
+                productEntityList.removeAt(ProductDetailFragment.deletePosition!!)
                 if (FilterFragment.list != null) {
                     FilterFragment.list!!.removeAt(ProductDetailFragment.deletePosition!!)
                 }

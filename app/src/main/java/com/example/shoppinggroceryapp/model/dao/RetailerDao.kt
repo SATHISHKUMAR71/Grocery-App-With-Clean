@@ -6,130 +6,130 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.shoppinggroceryapp.model.entities.order.DailySubscription
-import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnce
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.order.TimeSlot
-import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnce
-import com.example.shoppinggroceryapp.model.entities.products.BrandData
-import com.example.shoppinggroceryapp.model.entities.products.Category
-import com.example.shoppinggroceryapp.model.entities.products.DeletedProductList
-import com.example.shoppinggroceryapp.model.entities.products.Images
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
-import com.example.shoppinggroceryapp.model.entities.products.Product
-import com.example.shoppinggroceryapp.model.entities.recentlyvieweditems.RecentlyViewedItems
+import com.example.shoppinggroceryapp.model.entities.order.DailySubscriptionEntity
+import com.example.shoppinggroceryapp.model.entities.order.MonthlyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.order.TimeSlotEntity
+import com.example.shoppinggroceryapp.model.entities.order.WeeklyOnceEntity
+import com.example.shoppinggroceryapp.model.entities.products.BrandDataEntity
+import com.example.shoppinggroceryapp.model.entities.products.CategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.DeletedProductListEntity
+import com.example.shoppinggroceryapp.model.entities.products.ImagesEntity
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
+import com.example.shoppinggroceryapp.model.entities.recentlyvieweditems.RecentlyViewedItemsEntity
 
 @Dao
 interface RetailerDao:UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addParentCategory(parentCategory: ParentCategory)
+    fun addParentCategory(parentCategoryEntity: ParentCategoryEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSubCategory(category: Category)
+    fun addSubCategory(categoryEntity: CategoryEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addNewBrand(brandData: BrandData)
+    fun addNewBrand(brandDataEntity: BrandDataEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addTimeSlot(timeSlot: TimeSlot)
+    fun addTimeSlot(timeSlotEntity: TimeSlotEntity)
 
     @Update
-    fun updateTimeSlot(timeSlot: TimeSlot)
+    fun updateTimeSlot(timeSlotEntity: TimeSlotEntity)
 
 
     @Delete
-    fun deleteFromWeeklySubscription(weeklyOnce: WeeklyOnce)
+    fun deleteFromWeeklySubscription(weeklyOnceEntity: WeeklyOnceEntity)
 
     @Delete
-    fun deleteFromMonthlySubscription(monthlyOnce: MonthlyOnce)
+    fun deleteFromMonthlySubscription(monthlyOnceEntity: MonthlyOnceEntity)
 
     @Delete
-    fun deleteFromDailySubscription(dailySubscription: DailySubscription)
+    fun deleteFromDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity)
 
-    @Query("SELECT * FROM DailySubscription")
-    fun getDailySubscription():List<DailySubscription>
+    @Query("SELECT * FROM DailySubscriptionEntity")
+    fun getDailySubscription():List<DailySubscriptionEntity>
 
-    @Query("SELECT * FROM TimeSlot")
-    fun getOrderTimeSlot():List<TimeSlot>
+    @Query("SELECT * FROM TimeSlotEntity")
+    fun getOrderTimeSlot():List<TimeSlotEntity>
 
-    @Query("SELECT * FROM WeeklyOnce")
-    fun getWeeklySubscriptionList():List<WeeklyOnce>
+    @Query("SELECT * FROM WeeklyOnceEntity")
+    fun getWeeklySubscriptionList():List<WeeklyOnceEntity>
 
-    @Query("SELECT * FROM MonthlyOnce")
-    fun getMonthlySubscriptionList():List<MonthlyOnce>
+    @Query("SELECT * FROM MonthlyOnceEntity")
+    fun getMonthlySubscriptionList():List<MonthlyOnceEntity>
 
-    @Query("SELECT * FROM WeeklyOnce Where WeeklyOnce.orderId=:orderId")
-    fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnce
+    @Query("SELECT * FROM WeeklyOnceEntity Where WeeklyOnceEntity.orderId=:orderId")
+    fun getOrderedDayForWeekSubscription(orderId:Int):WeeklyOnceEntity
 
-    @Query("SELECT * FROM DailySubscription Where DailySubscription.orderId=:orderId")
-    fun getOrderForDailySubscription(orderId:Int):DailySubscription
+    @Query("SELECT * FROM DailySubscriptionEntity Where DailySubscriptionEntity.orderId=:orderId")
+    fun getOrderForDailySubscription(orderId:Int):DailySubscriptionEntity
 
-    @Query("SELECT * FROM TimeSlot Where TimeSlot.orderId=:orderId")
-    fun getOrderedTimeSlot(orderId:Int):TimeSlot
+    @Query("SELECT * FROM TimeSlotEntity Where TimeSlotEntity.orderId=:orderId")
+    fun getOrderedTimeSlot(orderId:Int):TimeSlotEntity
 
-    @Query("SELECT * FROM MonthlyOnce Where MonthlyOnce.orderId=:orderId")
-    fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnce
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addMonthlyOnceSubscription(monthlyOnce: MonthlyOnce)
+    @Query("SELECT * FROM MonthlyOnceEntity Where MonthlyOnceEntity.orderId=:orderId")
+    fun getOrderedDayForMonthlySubscription(orderId:Int):MonthlyOnceEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addWeeklyOnceSubscription(weeklyOnce: WeeklyOnce)
+    fun addMonthlyOnceSubscription(monthlyOnceEntity: MonthlyOnceEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addDailySubscription(dailySubscription: DailySubscription)
+    fun addWeeklyOnceSubscription(weeklyOnceEntity: WeeklyOnceEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addProduct(product: Product)
+    fun addDailySubscription(dailySubscriptionEntity: DailySubscriptionEntity)
 
-    @Query("SELECT * FROM Product ORDER BY productId DESC")
-    fun getLastProduct():Product
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addProduct(productEntity: ProductEntity)
+
+    @Query("SELECT * FROM ProductEntity ORDER BY productId DESC")
+    fun getLastProduct():ProductEntity
 
 
     @Update
-    fun updateProduct(product: Product)
+    fun updateProduct(productEntity: ProductEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addProductInRecentlyViewedItems(recentlyViewedItem: RecentlyViewedItems)
+    fun addProductInRecentlyViewedItems(recentlyViewedItem: RecentlyViewedItemsEntity)
 
-    @Query("SELECT * FROM RecentlyViewedItems WHERE RecentlyViewedItems.productId=:productId and RecentlyViewedItems.userId=:user")
-    fun getProductsInRecentList(productId:Long,user:Int):RecentlyViewedItems
+    @Query("SELECT * FROM RecentlyViewedItemsEntity WHERE RecentlyViewedItemsEntity.productId=:productId and RecentlyViewedItemsEntity.userId=:user")
+    fun getProductsInRecentList(productId:Long,user:Int):RecentlyViewedItemsEntity
 
-    @Query("SELECT * FROM Images WHERE productId=:productId")
-    fun getImagesForProduct(productId: Long):List<Images>
+//    @Query("SELECT * FROM ImagesEntity WHERE productId=:productId")
+//    fun getImagesForProduct(productId: Long):List<ImagesEntity>
 
-    @Query("SELECT * FROM Images WHERE Images.images=:image")
-    fun getSpecificImage(image:String):Images
+    @Query("SELECT * FROM ImagesEntity WHERE ImagesEntity.images=:image")
+    fun getSpecificImage(image:String):ImagesEntity
 
     @Delete
-    fun deleteImage(images: Images)
+    fun deleteImage(imagesEntity: ImagesEntity)
 
-    @Query("SELECT * FROM OrderDetails ORDER BY orderId DESC")
-    fun getOrderDetails():List<OrderDetails>
+    @Query("SELECT * FROM OrderDetailsEntity ORDER BY orderId DESC")
+    fun getOrderDetails():List<OrderDetailsEntity>
 
     @Insert
-    fun addImagesInDb(images: Images)
+    fun addImagesInDb(imagesEntity: ImagesEntity)
 
     @Update
-    fun updateOrderDetails(orderDetails: OrderDetails)
+    fun updateOrderDetails(orderDetailsEntity: OrderDetailsEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addOrder(order:OrderDetails):Long
+    fun addOrder(order:OrderDetailsEntity):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addDeletedProduct(deletedProductList: DeletedProductList)
+    fun addDeletedProduct(deletedProductListEntity: DeletedProductListEntity)
 
     @Delete
-    fun deleteProduct(product: Product)
+    fun deleteProduct(productEntity: ProductEntity)
 
-    @Query("SELECT * FROM BrandData Where BrandData.brandName=:brandName")
-    fun getBrandWithName(brandName:String):BrandData
+    @Query("SELECT * FROM BrandDataEntity Where BrandDataEntity.brandName=:brandName")
+    fun getBrandWithName(brandName:String):BrandDataEntity
 
-    @Query("SELECT ParentCategory.parentCategoryImage FROM ParentCategory JOIN Category ON Category.parentCategoryName=ParentCategory.parentCategoryName Where categoryName=:parentCategoryName")
+    @Query("SELECT ParentCategoryEntity.parentCategoryImage FROM ParentCategoryEntity JOIN CategoryEntity ON CategoryEntity.parentCategoryName=ParentCategoryEntity.parentCategoryName Where categoryName=:parentCategoryName")
     fun getParentCategoryImage(parentCategoryName: String):String
 
-    @Query("SELECT ParentCategory.parentCategoryImage FROM ParentCategory Where parentCategoryName=:parentCategoryName")
+    @Query("SELECT ParentCategoryEntity.parentCategoryImage FROM ParentCategoryEntity Where parentCategoryName=:parentCategoryName")
     fun getParentCategoryImageForParent(parentCategoryName: String):String
 
 }

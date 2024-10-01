@@ -64,11 +64,11 @@ class RetailerRepository(private var productRetailerDataSource: ProductRetailerD
     fun getParentCategoryImage(parentCategoryName: String):String{
         return productRetailerDataSource.getParentCategoryImage(parentCategoryName)
     }
-    fun addProductImagesInDb(images: Images){
-        productRetailerDataSource.addProductImagesInDb(images)
+    fun addProductImagesInDb(image: Images){
+        productRetailerDataSource.addProductImagesInDb(image)
     }
 
-    fun deleteProductImage(images: Images){
-        productRetailerDataSource.deleteProductImage(images)
+    fun deleteProductImage(image: Images){
+        productRetailerDataSource.deleteProductImage(image)
     }
 }

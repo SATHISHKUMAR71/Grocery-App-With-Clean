@@ -17,8 +17,8 @@ import com.example.shoppinggroceryapp.views.userviews.offer.OfferFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment.Companion.productListFilterCount
 import com.example.shoppinggroceryapp.views.sharedviews.filter.FilterFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
-import com.example.shoppinggroceryapp.model.entities.products.CartWithProductData
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
+import com.example.shoppinggroceryapp.model.entities.products.CartWithProductDataEntity
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.views.sharedviews.productviews.productlist.ProductListFragment
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.adapter.OrderListAdapter
@@ -30,8 +30,8 @@ class OrderListFragment : Fragment() {
 
 
     companion object{
-        var selectedOrder:OrderDetails? = null
-        var correspondingCartList:List<CartWithProductData>? = null
+        var selectedOrder:OrderDetailsEntity? = null
+        var correspondingCartList:List<CartWithProductDataEntity>? = null
     }
 
     private lateinit var orderList:RecyclerView
@@ -69,8 +69,8 @@ class OrderListFragment : Fragment() {
         val orderListViewModel = ViewModelProvider(this,
             OrderListViewModelFactory(AppDatabase.getAppDatabase(requireContext()).getRetailerDao())
         )[OrderListViewModel::class.java]
-        var cartWithProductsList = mutableListOf<MutableList<CartWithProductData>>()
-        var orderedItems:MutableList<OrderDetails> = mutableListOf()
+        var cartWithProductsList = mutableListOf<MutableList<CartWithProductDataEntity>>()
+        var orderedItems:MutableList<OrderDetailsEntity> = mutableListOf()
         var orderAdapter = OrderListAdapter(orderedItems.toMutableList(), this, clickable)
         var subscriptionType = arguments?.getString("subscriptionType")
         toolbar = view.findViewById(R.id.materialToolbarOrderList)

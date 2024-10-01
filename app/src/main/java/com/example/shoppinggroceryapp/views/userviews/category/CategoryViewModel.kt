@@ -4,13 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shoppinggroceryapp.model.dao.ProductDao
 import com.example.shoppinggroceryapp.model.dataclass.ChildCategoryName
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
 
 class CategoryViewModel(var productDao: ProductDao):ViewModel() {
 
-    var parentList:MutableLiveData<List<ParentCategory>> = MutableLiveData()
+    var parentList:MutableLiveData<List<ParentCategoryEntity>> = MutableLiveData()
     var childList:MutableLiveData<List<List<ChildCategoryName>>> = MutableLiveData()
-    var parentCategory:ParentCategory? = null
+    var parentCategoryEntity:ParentCategoryEntity? = null
     fun getParentCategory(){
         Thread{
             parentList.postValue(productDao.getParentCategoryList())
@@ -27,9 +27,9 @@ class CategoryViewModel(var productDao: ProductDao):ViewModel() {
         }.start()
     }
 
-    fun updateParentCategory(parentCategory: ParentCategory){
+    fun updateParentCategory(parentCategoryEntity: ParentCategoryEntity){
         Thread{
-            productDao.updateParentCategory(parentCategory)
+            productDao.updateParentCategory(parentCategoryEntity)
         }.start()
     }
 }

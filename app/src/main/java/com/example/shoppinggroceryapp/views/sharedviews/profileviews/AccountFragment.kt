@@ -190,7 +190,7 @@ class AccountFragment : Fragment() {
 
     private fun restartApp() {
         val intent = Intent(context,MainActivity::class.java)
-        CartFragment.selectedAddress = null
+        CartFragment.selectedAddressEntity = null
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         val sharedPreferences = requireActivity().getSharedPreferences("freshCart",Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

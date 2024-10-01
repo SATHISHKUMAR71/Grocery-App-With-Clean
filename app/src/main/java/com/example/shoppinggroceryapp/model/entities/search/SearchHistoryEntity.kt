@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class SearchHistory (
+data class SearchHistoryEntity (
     @PrimaryKey(autoGenerate = false)
     var searchText:String,
     var userId:Int

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class ParentCategory(
+data class ParentCategoryEntity(
     @PrimaryKey
     val parentCategoryName:String,
     val parentCategoryImage:String,

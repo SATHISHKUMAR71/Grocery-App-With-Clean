@@ -16,8 +16,8 @@ import com.example.shoppinggroceryapp.helpers.dategenerator.DateGenerator
 import com.example.shoppinggroceryapp.helpers.fragmenttransaction.FragmentTransaction
 import com.example.shoppinggroceryapp.views.initialview.InitialFragment
 import com.example.shoppinggroceryapp.model.database.AppDatabase
-import com.example.shoppinggroceryapp.model.entities.help.CustomerRequest
-import com.example.shoppinggroceryapp.model.entities.order.OrderDetails
+import com.example.shoppinggroceryapp.model.entities.help.CustomerRequestEntity
+import com.example.shoppinggroceryapp.model.entities.order.OrderDetailsEntity
 import com.example.shoppinggroceryapp.views.sharedviews.orderviews.orderlist.OrderListFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -27,7 +27,7 @@ class Help : Fragment() {
 
     private lateinit var helpViewModel: HelpViewModel
     companion object{
-        var selectedOrder:OrderDetails? = null
+        var selectedOrder:OrderDetailsEntity? = null
         var backPressed = false
     }
 
@@ -86,7 +86,7 @@ class Help : Fragment() {
                 if(req.text.toString().isNotEmpty()){
                     Toast.makeText(requireContext(),"Request Sent Successfully",Toast.LENGTH_SHORT).show()
                     var orderId = selectedOrder!!.orderId
-                    helpViewModel.sendReq(CustomerRequest(0,MainActivity.userId.toInt(),
+                    helpViewModel.sendReq(CustomerRequestEntity(0,MainActivity.userId.toInt(),
                         DateGenerator.getCurrentDate(),
                         orderId,req.text.toString()))
                     parentFragmentManager.popBackStack()

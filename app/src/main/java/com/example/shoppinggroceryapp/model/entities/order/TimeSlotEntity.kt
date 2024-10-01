@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class MonthlyOnce (
+data class TimeSlotEntity(
     @PrimaryKey(autoGenerate = false)
     val orderId:Int,
-    val dayOfMonth:Int
+    val timeId:Int
 )

@@ -29,9 +29,9 @@ import com.example.shoppinggroceryapp.helpers.inputvalidators.interfaces.InputCh
 import com.example.shoppinggroceryapp.helpers.inputvalidators.TextLayoutInputChecker
 import com.example.shoppinggroceryapp.model.database.AppDatabase
 import com.example.shoppinggroceryapp.model.dataclass.IntWithCheckedData
-import com.example.shoppinggroceryapp.model.entities.products.Category
-import com.example.shoppinggroceryapp.model.entities.products.ParentCategory
-import com.example.shoppinggroceryapp.model.entities.products.Product
+import com.example.shoppinggroceryapp.model.entities.products.CategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ParentCategoryEntity
+import com.example.shoppinggroceryapp.model.entities.products.ProductEntity
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -157,7 +157,7 @@ class AddOrEditProductFragment : Fragment() {
         setUpTextFocusListeners()
 
         formatter = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault())
-        ProductListFragment.selectedProduct.value?.let {
+        ProductListFragment.selectedProductEntity.value?.let {
             editingProduct = true
             addEditProductViewModel.getBrandName(it.brandId)
             imageHandler.gotImage.value = imageLoader.getImageInApp(requireContext(),it.mainImage)
@@ -230,7 +230,7 @@ class AddOrEditProductFragment : Fragment() {
             }
             productParentCategory.setSimpleItems(parentArray)
         }
-        ProductListFragment.selectedProduct.value?.let {
+        ProductListFragment.selectedProductEntity.value?.let {
             addEditProductViewModel.getParentCategory(it.categoryName)
         }
         addEditProductViewModel.parentCategory.observe(viewLifecycleOwner){ parentCategoryValue ->
@@ -240,7 +240,7 @@ class AddOrEditProductFragment : Fragment() {
 
         addEditProductViewModel.childArray.observe(viewLifecycleOwner){ childItems->
             productSubCat.setSimpleItems(childItems)
-            ProductListFragment.selectedProduct.value?.let {
+            ProductListFragment.selectedProductEntity.value?.let {
                 productSubCat.setText(it.categoryName)
             }
         }
@@ -470,7 +470,7 @@ class AddOrEditProductFragment : Fragment() {
                             isCategoryImageAdded = false
                         }
                         addEditProductViewModel.addParentCategory(
-                            ParentCategory(
+                            ParentCategoryEntity(
                                 productParentCategory.text.toString(),
                                 filName,
                                 "",
@@ -480,7 +480,7 @@ class AddOrEditProductFragment : Fragment() {
                     }
                     if (isNewSubCategory) {
                         addEditProductViewModel.addSubCategory(
-                            Category(
+                            CategoryEntity(
                                 productSubCat.text.toString(),
                                 productParentCategory.text.toString(), ""
                             )
@@ -490,8 +490,8 @@ class AddOrEditProductFragment : Fragment() {
 
                         addEditProductViewModel.updateInventory(
                             brandNameStr,
-                            (ProductListFragment.selectedProduct.value == null),
-                            Product(
+                            (ProductListFragment.selectedProductEntity.value == null),
+                            ProductEntity(
                                 0,
                                 0,
                                 subCategoryName,
@@ -506,7 +506,7 @@ class AddOrEditProductFragment : Fragment() {
                                 rawExpiryDate,
                                 productAvailableItems.text.toString().toInt()
                             ),
-                            ProductListFragment.selectedProduct.value?.productId,
+                            ProductListFragment.selectedProductEntity.value?.productId,
                             imageListNames,
                             deletedImageList
                         )
